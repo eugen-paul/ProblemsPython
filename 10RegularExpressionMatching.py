@@ -6,70 +6,65 @@ class Solution:
         x = re.search("^"+p+"$", s)
         return x is not None and (x.group(0) == s)
 
-    def isMatch(self, s: str, p: str) -> bool:
+    def isMatch(self, s: str, p: str, s_start=0, p_start=0) -> bool:
         # end of text and of RegEx was reached
-        if len(p) == 0 and len(s) == 0:
+        if len(s)-s_start <= 0 and len(p)-p_start <= 0:
             return True
 
         # End of RegEx but not of text was reached
-        if len(p) == 0:
+        if len(p)-p_start <= 0:
             return False
 
-        match_char = ""
-        match_any = False
-        match_many = False
-
         # get next RegEx char
-        match_char = p[0]
+        match_char = p[p_start]
         match_any = (match_char == '.')
-        match_many = False
-        if len(p) >= 2 and p[1] == '*':
-            match_many = True
+        match_many = len(p)-p_start >= 2 and p[p_start+1] == '*'
 
         # check if next RegEx char repeats itself
         delta = 2
-        while match_many and len(p) > delta + 2 and match_char == p[delta] and p[delta+1] == "*":
+        while match_many and len(p)-p_start > delta + 2 and match_char == p[p_start+delta] and p[p_start+delta+1] == "*":
             delta += 2
 
         # End of text but not of RegEx was reached
-        if len(s) == 0 and match_many:
-            return self.isMatch(s[1:], p[2:])
-        if len(s) == 0 and not match_many:
+        if len(s)-s_start <= 0 and match_many:
+            return self.isMatch(s, p, s_start, p_start+2)
+        if len(s)-s_start <= 0 and not match_many:
             # next char of RegEx must be present, but there is none
             return False
 
         # get next text char
-        current_char = s[0] if len(s) > 0 else None
+        current_char = s[s_start] if len(s)-s_start > 0 else None
 
-        # current character must be present
+        # current character is single char and must be present
         if not match_many:
             if not match_any:
                 # current character is a specific character and must be present
                 if match_char != current_char:
                     return False
             # current character match and must be present
-            return self.isMatch(s[1:], p[1:])
+            return self.isMatch(s, p, s_start+1, p_start+1)
 
+        # current character can be present
         if not match_any:
             # current character is a specific character and can be present
             if match_char != current_char:
                 # current character is a specific character and don'n match
                 # check next RegEx char
-                return self.isMatch(s, p[delta:])
+                return self.isMatch(s, p, s_start, p_start+delta)
 
         # current character is a specific character and match
         # check :
         #  - current char with next RegEx char
         #  - next char with next RegEx char
         #  - next char with current RegEx char
-        return self.isMatch(s, p[delta:]) \
-            or self.isMatch(s[1:], p[delta:]) \
-            or self.isMatch(s[1:], p)
+        return self.isMatch(s, p, s_start, p_start+delta) \
+            or self.isMatch(s, p, s_start+1, p_start+delta) \
+            or self.isMatch(s, p, s_start+1, p_start)
 
 
 def do_test(i: int, s: str, p: str, r):
     c = Solution()
-    resp = c.isMatchRegex(s, p)
+    resp = c.isMatch(s, p)
     if resp == r:
         print("OK", i)
     else:
