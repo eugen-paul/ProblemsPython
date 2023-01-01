@@ -71,8 +71,6 @@ def do_test2(i: int, s: str, r: int):
 
 
 if __name__ == "__main__":
-    s = Solution()
-
     do_test(0, "42", 42)
     do_test(1, "   -42", -42)
     do_test(2, "4193 with words", 4193)
