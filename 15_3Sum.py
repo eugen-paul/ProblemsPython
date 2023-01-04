@@ -64,7 +64,7 @@ class Solution:
             right = len(k)-1
 
             while left <= right:
-                if left == right and m[k[left]] == 1:
+                if left == right and (m[k[left]] == 1 or (m[k[left]] == 2 and left == i)):
                     break
                 s = current + k[left] + k[right]
                 if s == 0:
