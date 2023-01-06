@@ -26,6 +26,26 @@ class Solution:
         if n == 2:
             return list(m[2])
 
+        for i in range(3, n+1):
+            set_of_i = set()
+            self.add_brackets_one(m, set_of_i, i-1)
+            for j in range(2, (i // 2) + 1):
+                self.add_brackets(m, set_of_i, j, i-j)
+            m[i] = set_of_i
+
+        return list(m[n])
+
+    def generateParenthesis_2(self, n: int) -> List[str]:
+        m = {
+            1: {"()"},
+            2: {"(())", "()()"},
+        }
+
+        if n == 1:
+            return list(m[1])
+        if n == 2:
+            return list(m[2])
+
         if n >= 3:
             n3 = set()
             self.add_brackets_one(m, n3, 2)
