@@ -9,6 +9,23 @@ class ListNode:
 
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        """lol, this solution is faster as other"""
+
+        data = []
+        for l in lists:
+            while l is not None:
+                data.append(l.val)
+                l = l.next
+
+        data.sort()
+        
+        response = None
+        for x in reversed(data):
+            cur = ListNode(x, response)
+            response = cur
+        return response
+
+    def mergeKLists_2(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         list_copy: List[Optional[ListNode]] = list()
         for x in lists:
             if x is not None:
