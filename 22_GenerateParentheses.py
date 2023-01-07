@@ -2,34 +2,24 @@ from typing import Dict, List, Set
 
 
 class Solution:
-    def add_brackets_one(self, m: Dict[int, Set[str]], s: Set[str], left: int):
+    def surround_with_brackets(self, m: Dict[int, Set[str]], s: Set[str], left: int):
         for x in m[left]:
             s.add("("+x+")")
-            s.add("()"+x)
-            s.add(x+"()")
 
     def add_brackets(self, m: Dict[int, Set[str]], s: Set[str], left: int, right: int):
         for x in m[left]:
             for x2 in m[right]:
                 s.add(x+x2)
-                if left != right:
-                    s.add(x2+x)
 
     def generateParenthesis(self, n: int) -> List[str]:
         m = {
             1: {"()"},
-            2: {"(())", "()()"},
         }
 
-        if n == 1:
-            return list(m[1])
-        if n == 2:
-            return list(m[2])
-
-        for i in range(3, n+1):
+        for i in range(2, n+1):
             set_of_i = set()
-            self.add_brackets_one(m, set_of_i, i-1)
-            for j in range(2, (i // 2) + 1):
+            self.surround_with_brackets(m, set_of_i, i-1)
+            for j in range(1, i):
                 self.add_brackets(m, set_of_i, j, i-j)
             m[i] = set_of_i
 
@@ -48,38 +38,38 @@ class Solution:
 
         if n >= 3:
             n3 = set()
-            self.add_brackets_one(m, n3, 2)
+            self.surround_with_brackets(m, n3, 2)
             m[3] = n3
 
         if n >= 4:
             n4 = set()
-            self.add_brackets_one(m, n4, 3)
+            self.surround_with_brackets(m, n4, 3)
             self.add_brackets(m, n4, 2, 2)
             m[4] = n4
 
         if n >= 5:
             n5 = set()
-            self.add_brackets_one(m, n5, 4)
+            self.surround_with_brackets(m, n5, 4)
             self.add_brackets(m, n5, 2, 3)
             m[5] = n5
 
         if n >= 6:
             n6 = set()
-            self.add_brackets_one(m, n6, 5)
+            self.surround_with_brackets(m, n6, 5)
             self.add_brackets(m, n6, 3, 3)
             self.add_brackets(m, n6, 2, 4)
             m[6] = n6
 
         if n >= 7:
             n7 = set()
-            self.add_brackets_one(m, n7, 6)
+            self.surround_with_brackets(m, n7, 6)
             self.add_brackets(m, n7, 2, 5)
             self.add_brackets(m, n7, 3, 4)
             m[7] = n7
 
         if n >= 8:
             n8 = set()
-            self.add_brackets_one(m, n8, 7)
+            self.surround_with_brackets(m, n8, 7)
             self.add_brackets(m, n8, 2, 6)
             self.add_brackets(m, n8, 3, 5)
             self.add_brackets(m, n8, 4, 4)
