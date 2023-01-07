@@ -12,7 +12,12 @@ if __name__ == "__main__":
     do_test(0, "42", 42)
 
 ##########################################
-
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+        
+#----
 
 def from_list(data: ListNode):
     response = []
@@ -31,13 +36,13 @@ def gen_list(data: list):
     return last
 
 
-def do_test(i: int, s, n, r):
+def do_test(i: int, s, r):
     c = Solution()
-    resp = c.removeNthFromEnd(gen_list(s), n)
+    resp = c.removeNthFromEnd(gen_list(s))
     if from_list(resp) == r:
         print("OK", i)
     else:
-        print("NOK", i, "expected", r, "response", resp)
+        print("NOK", i, "expected", r, "response", from_list(resp))
 
 
 if __name__ == "__main__":
