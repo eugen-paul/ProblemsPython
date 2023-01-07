@@ -9,7 +9,7 @@ class ListNode:
 
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        list_copy = list()
+        list_copy: List[Optional[ListNode]] = list()
         for x in lists:
             if x is not None:
                 list_copy.append(x)
