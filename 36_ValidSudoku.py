@@ -3,6 +3,35 @@ from typing import List
 
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
+
+        def check_area(x: int, y: int, w: int, h: int) -> bool:
+            b = set()
+            for i in range(x, x+w):
+                for j in range(y, y+h):
+                    c = board[i][j]
+                    if c != '.':
+                        if c in b:
+                            return False
+                        b.add(c)
+            return True
+
+        for i in range(9):
+            if not check_area(i, 0, 1, 9):
+                return False
+
+        for i in range(9):
+            if not check_area(0, i, 9, 1):
+                return False
+
+        # check box
+        for i in range(3):
+            for j in range(3):
+                if not check_area(i * 3, j * 3, 3, 3):
+                    return False
+
+        return True
+
+    def isValidSudoku_2(self, board: List[List[str]]) -> bool:
         # check h
         for line in board:
             b = set()
