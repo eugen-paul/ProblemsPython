@@ -22,6 +22,20 @@ class Solution:
 
         return bst_lvl
 
+    def longestValidParentheses_web_solution(self, s: str) -> int:
+        max_length = 0
+        stck = [-1]  # position befor start of current window
+        for i in range(len(s)):
+            if s[i] == '(':
+                stck.append(i)
+            else:
+                stck.pop()
+                if not stck:  # Current window is no longer valid (lvl == -1). Start new window.
+                    stck.append(i)
+                else:
+                    max_length = max(max_length, i-stck[-1])  # update the length of the valid substring
+        return max_length
+
     def longestValidParentheses_fast_but_need_a_lot_of_memory(self, s: str) -> int:
         m = dict()
 
