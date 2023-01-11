@@ -2,61 +2,60 @@ from typing import Dict, List, Set, Tuple
 
 
 class Solution:
-    def deletePossible(self, pos: Dict[Tuple[int, int], Set[int]], p, v) -> None:
-        def rem(x, y, w, h):
-            for i in range(x, x+w):
-                for j in range(y, y+h):
-                    if (i, j) in pos:
-                        s = pos[(i, j)]
-                        if v in s:
-                            s.remove(v)
+    """ 
+    pos - Listing of all possible numbers (value) that can occur at a position (key).
+    """
 
-        rem(0, p[1], 9, 1)
-        rem(p[0], 0, 1, 9)
+    def delete_check_value(self, pos: Dict[Tuple[int, int], Set[int]], x, y, w, h, v):
+        for i in range(x, x+w):
+            for j in range(y, y+h):
+                if (i, j) in pos:
+                    s = pos[(i, j)]
+                    if v in s:
+                        s.remove(v)
 
+    def delete_unpossible(self, pos: Dict[Tuple[int, int], Set[int]], p, v) -> None:
+        """
+        Cleans up the "pos". Deletes from the list of possible numbers (value of pos) the numbers that can no longer occur (v).
+        """
+        self.delete_check_value(pos, 0, p[1], 9, 1, v)
+        self.delete_check_value(pos, p[0], 0, 1, 9, v)
         mr = p[0] // 3
         mc = p[1] // 3
-        rem(mr * 3, mc * 3, 3, 3)
+        self.delete_check_value(pos, mr * 3, mc * 3, 3, 3, v)
+
+    def is_single(self, pos: Dict[Tuple[int, int], Set[int]], x, y, w, h, v) -> bool:
+        found = False
+        for i in range(x, x+w):
+            for j in range(y, y+h):
+                if (i, j) in pos:
+                    s = pos[(i, j)]
+                    if v in s:
+                        if found:
+                            return False
+                        found = True
+        return True
 
     def check_unique(self, pos: Dict[Tuple[int, int], Set[int]]):
-        def is_single(x, y, w, h, v) -> bool:
-            found = False
-            for i in range(x, x+w):
-                for j in range(y, y+h):
-                    if (i, j) in pos:
-                        s = pos[(i, j)]
-                        if v in s:
-                            if found:
-                                return False
-                            found = True
-            return True
-
-        def rem(x, y, w, h, v):
-            for i in range(x, x+w):
-                for j in range(y, y+h):
-                    if (i, j) in pos:
-                        s = pos[(i, j)]
-                        if v in s:
-                            s.remove(v)
-
         for p, v_set in pos.items():
             for v in v_set:
-                unique_r = is_single(0, p[1], 9, 1, v)
-                unique_c = is_single(p[0], 0, 1, 9, v)
-
                 mr = p[0] // 3
                 mc = p[1] // 3
-                unique_s = is_single(mr * 3, mc * 3, 3, 3, v)
 
-                if unique_r and unique_c and unique_s:
+                if self.is_single(pos, 0, p[1], 9, 1, v) \
+                    or self.is_single(pos, p[0], 0, 1, 9, v) \
+                        or self.is_single(pos, mr * 3, mc * 3, 3, 3, v):
                     v_set.clear()
-                    rem(0, p[1], 9, 1, v)
-                    rem(p[0], 0, 1, 9, v)
-                    rem(mr * 3, mc * 3, 3, 3, v)
+                    self.delete_check_value(pos, 0, p[1], 9, 1, v)
+                    self.delete_check_value(pos, p[0], 0, 1, 9, v)
+                    self.delete_check_value(pos, mr * 3, mc * 3, 3, 3, v)
                     v_set.add(v)
                     break
 
     def solve(self, next_check: Dict[Tuple[int, int], int], pos: Dict[Tuple[int, int], Set[int]], m: Dict[Tuple[int, int], int]) -> bool:
+        """
+        next_check - Listing of known numbers that have not yet been viewed.
+        """
         def is_single(x, y, w, h, v) -> bool:
             found = False
             for i in range(x, x+w):
@@ -70,18 +69,21 @@ class Solution:
             return True
 
         while len(next_check) != 0:
+            # Edit the list of possible numbers. Delete from the list all numbers that are already known or numbers that cannot occur.
             for p, v in next_check.items():
-                self.deletePossible(pos, p, v)
+                self.delete_unpossible(pos, p, v)
             next_check.clear()
             self.check_unique(pos)
-            self.glob += 1
 
             to_remove = set()
+
+            # Check if, after processing, there are positions where only one number can appear. If yes, then add the position to next_check
             for p, s in pos.items():
                 if len(s) == 1:
                     next_check[p] = s.pop()
                     m[p] = next_check[p]
 
+                    # Here you have to make sure that if you add a number to the result, that the result remains valid.
                     unique_r = is_single(0, p[1], 9, 1, next_check[p])
                     unique_c = is_single(p[0], 0, 1, 9, next_check[p])
                     mr = p[0] // 3
@@ -95,7 +97,6 @@ class Solution:
                     return False
             for p in to_remove:
                 pos.pop(p)
-            pass
 
         return True
 
@@ -107,6 +108,7 @@ class Solution:
         if len(pos) == 0:
             return True
 
+        # No solution could be found. Find a position where the number of possible numbers is the smallest.
         min_tries_k = None
         min_tries_l = 10
         for k_main, v_main in pos.items():
@@ -116,6 +118,7 @@ class Solution:
                 if min_tries_l == 2:
                     break
 
+        # Try the numbers one after the other.
         for v_try in pos[min_tries_k]:
             m_sub = m.copy()
             m_sub[k_main] = v_try
@@ -127,15 +130,19 @@ class Solution:
             next_check_sub = next_check.copy()
             next_check_sub[k_main] = v_try
 
+            # Recursive call on itself. Use the copies of the input data.
             is_ok = self.rec_solver(next_check_sub, pos_sub, m_sub)
             if is_ok:
                 break
 
         if is_ok:
+            # A solution was found. Copy the data from the temporary storage to the input listing.
             m.clear()
             for k, v in m_sub.items():
                 m[k] = v
             return True
+
+        # impossible variant. Return False.
         return False
 
     def solveSudoku(self, board: List[List[str]]) -> None:
@@ -152,8 +159,6 @@ class Solution:
                 else:
                     s.add((x, y))
                     pos[(x, y)] = {1, 2, 3, 4, 5, 6, 7, 8, 9}
-
-        # self.solve(next_check, pos, m)
 
         if len(pos) != 0:
             self.rec_solver(next_check, pos, m)
