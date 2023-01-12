@@ -18,6 +18,36 @@ class Solution:
         if length == 1:
             return True
 
+        pointer = head
+        first = ListNode(-1, None)
+        for _ in range(length // 2):
+            nxt = pointer.next
+            pointer.next = first.next
+            first.next = pointer
+            pointer = nxt
+
+        if length % 2 == 1:
+            pointer = pointer.next
+
+        first = first.next
+        for _ in range(length // 2):
+            if first.val != pointer.val:
+                return False
+            first = first.next
+            pointer = pointer.next
+
+        return True
+
+    def isPalindrome2(self, head: Optional[ListNode]) -> bool:
+        length = 0
+        to_count = head
+        while to_count:
+            to_count = to_count.next
+            length += 1
+
+        if length == 1:
+            return True
+
         middle: Optional[ListNode] = head
         for _ in range(length // 2):
             middle = middle.next
@@ -81,3 +111,4 @@ if __name__ == "__main__":
     do_test(2, [0, 1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2, 1, 0], True)
     do_test(3, [0, 1, 0], True)
     do_test(4, [0], True)
+    do_test(5, [0, 1, 2], False)
