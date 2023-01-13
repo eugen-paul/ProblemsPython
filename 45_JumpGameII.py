@@ -4,10 +4,15 @@ from typing import Dict, List
 class Solution:
 
     mem_jumps: List[int]
+    best_resp: int
 
     def do_jump(self, nums: List[int], start: int, current) -> int:
         if start >= len(nums) - 1:
+            self.best_resp = min(current, self.best_resp)
             return 0
+
+        if current >= self.best_resp:
+            return 1_000_000
 
         mem = self.mem_jumps[start]
         if mem != -1:
@@ -26,6 +31,7 @@ class Solution:
 
     def jump(self, nums: List[int]) -> int:
         self.mem_jumps = [-1] * len(nums)
+        self.best_resp = 1_000_000
         return self.do_jump(nums, 0, 0)
 
 
