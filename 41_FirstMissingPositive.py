@@ -3,6 +3,31 @@ from typing import List
 
 class Solution:
     def firstMissingPositive(self, nums: List[int]) -> int:
+        # 1 <= response <= len(nums)+1
+        # nums.length <= 10**5 = 0x186A0 => Unlike solution firstMissingPositive2, set the availability flag equal to 0x100000.
+        flag = 0x100000
+        """
+        Advanced version of the dumb solution. Instead of storing the data in an extra array, 
+        the data is stored in input array. The bit 0x100000 at element N is set, if a value N+1 was read in the array.
+        """
+        for i, n, in enumerate(nums):
+            if n < 1 or n > len(nums):
+                # set all illegal values to 0
+                nums[i] = 0
+
+        #set last bit of nums[n] in n is in nums
+        for i, n in enumerate(nums):
+            v = n & 0xFFFFF
+            if v > 0:
+                nums[v-1] = nums[v-1] | flag
+
+        #response first i with nums[i] is even (last bit is not set)
+        for i in range(len(nums)):
+            if nums[i] & flag == 0:
+                return i+1
+        return len(nums)+1
+    
+    def firstMissingPositive2(self, nums: List[int]) -> int:
         """
         Advanced version of the dumb solution. Instead of storing the data in an extra array, 
         the data is stored in input array. For this the actual data is shifted 1 bit to the left. 
