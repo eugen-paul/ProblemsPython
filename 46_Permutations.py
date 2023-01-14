@@ -36,7 +36,7 @@ class Solution:
 
 def do_test(i: int, s, r):
     c = Solution()
-    resp = c.permute(s)
+    resp = c.permute_simple(s)
     if sorted(resp) == sorted(r):
         print("OK", i)
     else:
