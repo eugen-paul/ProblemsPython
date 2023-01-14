@@ -3,6 +3,28 @@ from typing import Dict, List
 
 class Solution:
 
+    def jump(self, nums: List[int]) -> int:
+        jumps = 0
+        i = 0
+
+        while i < len(nums)-1:
+            max_target = 0
+            max_index = 0
+            for j in range(1, nums[i]+1):
+                # check if the endpoint has been reached.
+                if i+j >= len(nums) - 1:
+                    max_index = i+j
+                    break
+                # search for the point that will take me the farthest on the next jump.
+                if max_target < nums[i+j] + i + j:
+                    max_target = nums[i+j] + i + j
+                    max_index = i+j
+            jumps += 1
+            # Make the jump to previously found point
+            i = max_index
+
+        return jumps
+
     mem_jumps: List[int]
     best_resp: int
 
@@ -29,7 +51,7 @@ class Solution:
 
         return best
 
-    def jump(self, nums: List[int]) -> int:
+    def jump_recursive(self, nums: List[int]) -> int:
         self.mem_jumps = [-1] * len(nums)
         self.best_resp = 1_000_000
         return self.do_jump(nums, 0, 0)
