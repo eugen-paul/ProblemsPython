@@ -6,15 +6,15 @@ class Solution:
         l = len(matrix)
         for x in range(l):
             for y in range(l):
-                matrix[y][x] = (matrix[y][x] + 1000) * 2000
+                matrix[y][x] = (matrix[y][x] + 1000) * 2001
 
         for x in range(l):
             for y in range(l):
-                matrix[y][x] += (matrix[l-x-1][y] // 2000)
+                matrix[y][x] += (matrix[l-x-1][y] // 2001)
 
         for x in range(len(matrix)):
             for y in range(len(matrix)):
-                matrix[y][x] = (matrix[y][x] % 2000) - 1000
+                matrix[y][x] = (matrix[y][x] % 2001) - 1000
 
 
 def do_test(i: int, s, r):
@@ -57,4 +57,13 @@ if __name__ == "__main__":
         [7, 4, -1],
         [8, -5, 2],
         [-9, 6, 3]
+    ])
+    do_test(3, [
+        [1000, 1000, 1000],
+        [-1000, -1000, -1000],
+        [1000, 1000, 1000],
+    ], [
+        [1000, -1000, 1000],
+        [1000, -1000, 1000],
+        [1000, -1000, 1000],
     ])
