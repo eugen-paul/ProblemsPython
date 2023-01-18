@@ -27,7 +27,7 @@ class Solution:
                     left = (left + 1) % len(nums)
                     if left_best_sum < current_sum:
                         left_best_sum = current_sum
-                        best_left = left                        
+                        best_left = left
                 left = best_left
                 current_sum = left_best_sum
             else:
@@ -36,6 +36,35 @@ class Solution:
             max_sum = max(max_sum, current_sum)
 
         return max_sum
+
+    def maxSubarraySumCircular_web(self, nums):
+        # kadane's algo
+        def kadane(nums):
+            local_sum = nums[0]
+            global_sum = nums[0]
+            for i in range(1, len(nums)):
+                local_sum = max(nums[i], local_sum + nums[i])
+                global_sum = max(global_sum, local_sum)
+            return global_sum
+        # case 1: max subarray sum in [0 .. n - 1]
+        # i.e. kadane's algo
+        # case 2. circular subarray in [0 .. |  n - 1 .. | .. 2 * n - 1]
+        # i.e. total sum - min subarray sum in [0 .. n - 1]
+        n = len(nums)
+        # use kadane's algo to find out max sub array sum (case 1)
+        max_sub_array_sum = kadane(nums)
+        # handle cases like [-3,-2,-3]
+        if max_sub_array_sum < 0:
+            return max_sub_array_sum
+        # calculate the total sum
+        total_sum = sum(nums)
+        # in order to use the same kadane function, we flip the sign
+        for i in range(n):
+            nums[i] *= -1
+        # use kadane's algo to find out min sub array sum
+        min_sub_array_sum = kadane(nums) * -1
+        # compare case 1 & case 2, take the max
+        return max(max_sub_array_sum, total_sum - min_sub_array_sum)
 
     def maxSubarraySumCircular_slow(self, nums: List[int]) -> int:
         best = -4 * 10**4
