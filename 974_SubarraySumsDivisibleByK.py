@@ -4,6 +4,24 @@ from typing import List
 class Solution:
     
     def subarraysDivByK(self, nums: List[int], k: int) -> int:
+        sum_map = dict()
+        
+        current_sum = 0
+        for n in nums:
+            current_sum = (current_sum + n) % k
+            sum_count = sum_map.get(current_sum, 0) + 1
+            sum_map[current_sum] = sum_count
+            
+        resp = 0
+        for k,v in sum_map.items():
+            if k == 0:
+                resp += v + sum(range(v))
+            else:
+                resp += v - 1 + sum(range(v-1))
+        
+        return resp
+    
+    def subarraysDivByK_sloq(self, nums: List[int], k: int) -> int:
 
         to_check = [1] * len(nums)
         first = 0
