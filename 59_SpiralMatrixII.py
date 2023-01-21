@@ -3,6 +3,49 @@ from typing import List
 
 class Solution:
     def generateMatrix(self, n: int) -> List[List[int]]:
+        if n == 1:
+            return [[1]]
+
+        resp = [[0 for _ in range(n)] for _ in range(n)]
+
+        x = 0
+        y = 0
+        r = 0
+        count = 1
+        while resp[y][x] == 0:
+            for _ in range(n - r):
+                resp[y][x] = count
+                x += 1
+                count += 1
+            x -= 1
+            y += 1
+
+            for _ in range(n - r - 1):
+                resp[y][x] = count
+                y += 1
+                count += 1
+            x -= 1
+            y -= 1
+
+            for _ in range(n - r - 1):
+                resp[y][x] = count
+                x -= 1
+                count += 1
+            x += 1
+            y -= 1
+
+            for _ in range(n - r - 2):
+                resp[y][x] = count
+                y -= 1
+                count += 1
+            x += 1
+            y += 1
+
+            r += 2
+
+        return resp
+
+    def generateMatrix_2(self, n: int) -> List[List[int]]:
 
         resp = [[0 for _ in range(n)] for _ in range(n)]
 
@@ -37,4 +80,4 @@ def do_test(i: int, s, r):
 if __name__ == "__main__":
     do_test(0, 3, [[1, 2, 3], [8, 9, 4], [7, 6, 5]])
     do_test(1, 1, [[1]])
-    do_test(2, 4, [[1,2,3,4],[12,13,14,5],[11,16,15,6],[10,9,8,7]])
+    do_test(2, 4, [[1, 2, 3, 4], [12, 13, 14, 5], [11, 16, 15, 6], [10, 9, 8, 7]])
