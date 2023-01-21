@@ -5,6 +5,37 @@ class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
         resp = list()
 
+        def gen_ip(current: List[str], sub_s: str):
+            if len(current) == 4 and len(sub_s) != 0:
+                return
+
+            if len(current) == 4:
+                resp.append(".".join(current.copy()))
+                return
+
+            if len(sub_s) == 0:
+                return
+
+            for i in range(1, 4):
+                if i > len(sub_s):
+                    break
+                current_sub = sub_s[:i]
+                if len(current_sub) > 1 and current_sub[0] == '0':
+                    break
+                if int(current_sub) > 255:
+                    break
+
+                current.append(current_sub)
+                gen_ip(current, sub_s[i:])
+                current.pop()
+
+        gen_ip(list(), s)
+
+        return resp
+
+    def restoreIpAddresses_2(self, s: str) -> List[str]:
+        resp = list()
+
         def gen_ip(current: List[str], pos: int):
             if len(current) == 3:
                 last = s[pos:]
@@ -20,7 +51,7 @@ class Solution:
                     break
                 if int(current_dig) > 255:
                     break
-                
+
                 current.append(current_dig)
                 gen_ip(current, i)
                 current.pop()
