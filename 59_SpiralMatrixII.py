@@ -1,0 +1,40 @@
+from typing import List
+
+
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+
+        resp = [[0 for _ in range(n)] for _ in range(n)]
+
+        def fill(x: int, y: int, count):
+            if x < 0 or x == n or y < 0 or y == n:
+                return
+            if resp[y][x] != 0:
+                return
+
+            resp[y][x] = count
+
+            if y == 0 or (y > 0 and resp[y-1][x] != 0):
+                fill(x+1, y, count+1)
+            fill(x, y+1, count+1)
+            fill(x-1, y, count+1)
+            fill(x, y-1, count+1)
+
+        fill(0, 0, 1)
+
+        return resp
+
+
+def do_test(i: int, s, r):
+    c = Solution()
+    resp = c.generateMatrix(s)
+    if resp == r:
+        print("OK", i)
+    else:
+        print("NOK", i, "expected", r, "response", resp)
+
+
+if __name__ == "__main__":
+    do_test(0, 3, [[1, 2, 3], [8, 9, 4], [7, 6, 5]])
+    do_test(1, 1, [[1]])
+    do_test(2, 4, [[1,2,3,4],[12,13,14,5],[11,16,15,6],[10,9,8,7]])
