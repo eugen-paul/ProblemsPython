@@ -11,6 +11,7 @@ class Solution:
         return -1
     
     def getCommon_accepted(self, nums1: List[int], nums2: List[int]) -> int:
+        """My solution for the contest."""
         set1 = set(nums1)
         set2 = set(nums2)
         

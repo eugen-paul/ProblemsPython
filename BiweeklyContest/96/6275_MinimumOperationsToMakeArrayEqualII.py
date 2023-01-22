@@ -3,12 +3,34 @@ from typing import List
 
 class Solution:
     def minOperations(self, nums1: List[int], nums2: List[int], k: int) -> int:
-
         if k == 0:
             if nums1 == nums2:
                 return 0
             return -1
-        
+
+        count_add = 0
+        count_sub = 0
+
+        for a, b in zip(nums1, nums2):
+            if (a - b) % k != 0:
+                return -1
+            if a > b:
+                count_sub += (a-b) // k
+            if b > a:
+                count_add += (b-a) // k
+
+        if count_add != count_sub:
+            return -1
+
+        return count_add
+
+    def minOperations_accepted(self, nums1: List[int], nums2: List[int], k: int) -> int:
+        """My solution for the contest."""
+        if k == 0:
+            if nums1 == nums2:
+                return 0
+            return -1
+
         delta = 0
         count = 0
 
