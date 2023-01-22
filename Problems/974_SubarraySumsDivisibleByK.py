@@ -4,7 +4,7 @@ from typing import List
 class Solution:
     
     def subarraysDivByK(self, nums: List[int], k: int) -> int:
-        sum_map = dict()
+        sum_map = {0:1}
         
         current_sum = 0
         for n in nums:
@@ -14,10 +14,7 @@ class Solution:
             
         resp = 0
         for k,v in sum_map.items():
-            if k == 0:
-                resp += v + sum(range(v))
-            else:
-                resp += v - 1 + sum(range(v-1))
+            resp += v - 1 + sum(range(v-1))
         
         return resp
     
