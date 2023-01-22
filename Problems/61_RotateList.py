@@ -12,6 +12,33 @@ class Solution:
         if k == 0 or head is None or head.next is None:
             return head
 
+        list_len = 1
+        current_pointer = head
+        while current_pointer.next:
+            list_len += 1
+            current_pointer = current_pointer.next
+
+        k = k % list_len
+        if k == 0:
+            return head
+
+        current_pointer.next = head
+
+        current_pointer = head
+        for _ in range(list_len - k - 1):
+            current_pointer = current_pointer.next
+
+        tmp = current_pointer
+        current_pointer = current_pointer.next
+        tmp.next = None
+        resp = current_pointer
+
+        return resp
+
+    def rotateRight_2(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        if k == 0 or head is None or head.next is None:
+            return head
+
         list_len = 0
         current_pointer = head
         while current_pointer:
