@@ -35,10 +35,40 @@ class Solution:
         for i in range(len(nums) // 2):
             nums[i], nums[len(nums) - i - 1] = nums[len(nums) - i - 1], nums[i]
 
+    def nextPermutation_off(self, nums: List[int]) -> None:
+        last = nums[-1]
+        for i, c in enumerate(reversed(nums)):
+            # Search from right to left the first tupel, which is in descending order.
+            if last > c:
+                # Find in all digits on the right side of the tupel the smallest number that is greater than the left number in the tupel.
+                best_target = last
+                best_pos = len(nums) - i
+                for j in range(len(nums) - i, len(nums)):
+                    if best_target >= nums[j] and c < nums[j]:
+                        best_target = nums[j]
+                        best_pos = j
+                # Swap the found number with the left number from the tuple.
+                nums[best_pos] = c
+                nums[len(nums) - i - 1] = best_target
+                # Reverse all numbers on the right side excluding the right number.
+                if i >= 2:
+                    # Here you could sort the sub-array by hand to save memory.
+                    sub_array = nums[len(nums) - i:]
+                    sub_array.reverse()
+                    for j, n in enumerate(sub_array):
+                        nums[len(nums) - i + j] = n
+                return
+            last = c
+
+        # No tuples in descending order were found. It is the last sequence of the permutation.
+        # Reverse the array.
+        for i in range(len(nums) // 2):
+            nums[i], nums[len(nums) - i - 1] = nums[len(nums) - i - 1], nums[i]
+
 
 def do_test(i: int, s, r):
     c = Solution()
-    c.nextPermutation(s)
+    c.nextPermutation_off(s)
     if s == r:
         print("OK", i)
     else:
