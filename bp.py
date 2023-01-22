@@ -1,3 +1,4 @@
+from typing import List
 
 def do_test(i: int, s, r):
     c = Solution()
