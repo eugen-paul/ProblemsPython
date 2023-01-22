@@ -6,15 +6,23 @@ from typing import List
 class Solution:
 
     def getPermutation(self, n: int, k: int) -> str:
-        l = [x for x in range(1, n+1)]
+        remaining_digits = [x for x in range(1, n+1)]
         resp = list()
+
+        # we calculate from 0 to n => increment k, since k is from 1 to n+1.
         k -= 1
-        while len(l) > 0:
-            f = math.factorial(len(l))
-            nm = f // len(l)
+
+        while len(remaining_digits) > 0:
+            # calculate the number of permutations of all possible remaining digits.
+            f = math.factorial(len(remaining_digits))
+            # The first digit in the permutations is always ascending. Calculate the block length of the digit.
+            nm = f // len(remaining_digits)
+            # Find out in which block the permutation you are looking for is located.
             p = k // nm
-            resp.append(l[p])
-            l.pop(p)
+            # Extend the result by the digit and delete the digit from the rest digit list.
+            resp.append(remaining_digits[p])
+            remaining_digits.pop(p)
+            # fit k for further search
             k = k % nm
 
         return "".join(str(x) for x in resp)
