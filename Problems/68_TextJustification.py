@@ -3,6 +3,41 @@ from typing import List
 
 class Solution:
     def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        """some ideas from solution"""
+        resp = []
+
+        def final_row(r: List[str]) -> str:
+            return " ".join(r).ljust(maxWidth)
+
+        def complete_row(r: List[str], w_len: int) -> str:
+            if len(r) == 1:
+                return final_row(r)
+
+            need_spaces = maxWidth - w_len
+            for i in range(need_spaces):
+                r[i % (len(r)-1)] += " "
+
+            return "".join(r)
+
+        row = [list(), 0]
+        row_len = -1
+        for w in words:
+            if len(w) <= maxWidth - row_len - 1:
+                row[0].append(w)
+                row[1] += len(w)
+                row_len += len(w) + 1
+            else:
+                resp.append(complete_row(row[0], row[1]))
+                row[0].clear()
+                row[0].append(w)
+                row[1] = len(w)
+                row_len = len(w)
+        if len(row) > 0:
+            resp.append(final_row(row[0]))
+
+        return resp
+
+    def fullJustify_2(self, words: List[str], maxWidth: int) -> List[str]:
         resp = []
 
         def final_row(r: List[str]) -> str:
