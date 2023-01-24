@@ -17,6 +17,28 @@ class Solution:
         if n > m:
             n, m = m, n
 
+        n_m = m + n
+        mult = 1
+        for i in range(m + 1, n_m + 1):
+            mult *= i
+        resp = mult // math.factorial(n_m - m)
+
+        return min(resp, 2 * 10**9)
+
+    def uniquePaths_2(self, m: int, n: int) -> int:
+        """
+        When moving through the labyrinth, the whole path from the robot consists exactly of m-1 steps down and n-1 steps right. The steps can occur in any order. 
+        The path is exactly m-1+n-1 steps long. Use the probability to calculate the lottery wins to determine the number of all possible paths (Binomial coefficient).
+        """
+        if m == 1 or n == 1:
+            return 1
+
+        m = m - 1
+        n = n - 1
+
+        if n > m:
+            n, m = m, n
+
         n_m = m+n
         resp = math.factorial(n_m) // (math.factorial(n) * math.factorial(n_m-n))
 
