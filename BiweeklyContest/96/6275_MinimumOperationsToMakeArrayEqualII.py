@@ -49,8 +49,8 @@ class Solution:
                         need += delta
                         delta = 0
 
-                if need % k != 0:
-                    return -1
+                if need % k != 0: # move to line 43
+                    return -1     #
                 count += need // k
                 delta += need
 
@@ -65,8 +65,8 @@ class Solution:
                         need -= delta
                         delta = 0
 
-                if need % k != 0:
-                    return -1
+                if need % k != 0: # move to line 59
+                    return -1     #
                 count += need // k
                 delta -= need
 
