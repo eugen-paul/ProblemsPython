@@ -4,6 +4,48 @@ from typing import Dict, List, Set, Tuple
 
 class Solution:
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+        """Some ideas from solution"""
+        if src == dst:
+            return 0
+
+        area: Dict[int, Set[Tuple[int, int]]] = dict()
+        for from_point, to_point, travel_cost in flights:
+            if from_point in area:
+                mm = area[from_point]
+                mm.add((to_point, travel_cost))
+            else:
+                area[from_point] = {(to_point, travel_cost)}
+
+        # index : city
+        # value : jumps
+        visited = [k+1] * n
+
+        # (best_cost, city, jumps)
+        to_check = []
+
+        heappush(to_check, (0, src, 0))
+
+        while len(to_check) > 0:
+            # get cheapest route
+            current = heappop(to_check)
+            if current[1] == dst:
+                # dst ist reached
+                return current[0]
+            if current[2] > k:
+                # route are to long
+                continue
+            if visited[current[1]] < current[2]:
+                continue
+            visited[current[1]] = current[2]
+
+            if current[1] in area:
+                for next_stop, step_cost in area[current[1]]:
+                    next_cost = current[0] + step_cost
+                    heappush(to_check, (next_cost, next_stop, current[2]+1))
+
+        return -1
+
+    def findCheapestPrice_2(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
         if src == dst:
             return 0
 
