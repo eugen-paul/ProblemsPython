@@ -3,6 +3,19 @@ from typing import List
 
 class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
+        def rec(start: int, rest_k: int) -> List[List[int]]:
+            if rest_k == 1:
+                return [[x] for x in range(start, n+1)]
+
+            r = list()
+            for i in range(start, n - rest_k + 2):
+                r += [[i] + x for x in rec(i+1, rest_k-1)]
+
+            return r
+
+        return rec(1, k)
+
+    def combine_1(self, n: int, k: int) -> List[List[int]]:
         s = [*range(1, n+1)]
 
         def rec(rest_n: List[int], rest_k: int) -> List[List[int]]:
@@ -30,3 +43,8 @@ def do_test(i: int, s, n, r):
 if __name__ == "__main__":
     do_test(0, 4, 2, [[1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4]])
     do_test(1, 1, 1, [[1]])
+    do_test(2, 5, 3, [[1, 2, 3], [1, 2, 4], [1, 2, 5], [1, 3, 4], [1, 3, 5], [1, 4, 5], [2, 3, 4], [2, 3, 5], [2, 4, 5], [3, 4, 5]])
+    do_test(3, 5, 4, [[1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 4, 5], [1, 3, 4, 5], [2, 3, 4, 5]])
+    do_test(4, 6, 3, [[1, 2, 3], [1, 2, 4], [1, 2, 5], [1, 2, 6], [1, 3, 4], [1, 3, 5],
+                      [1, 3, 6], [1, 4, 5], [1, 4, 6], [1, 5, 6], [2, 3, 4], [2, 3, 5],
+                      [2, 3, 6], [2, 4, 5], [2, 4, 6], [2, 5, 6], [3, 4, 5], [3, 4, 6], [3, 5, 6], [4, 5, 6]])
