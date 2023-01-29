@@ -48,3 +48,40 @@ def do_test(i: int, s, r):
 
 if __name__ == "__main__":
     do_test(0, [1,2,4], [1,1,2,3,4,4])
+
+##########################################
+class TreeNode:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+#----
+
+
+def deserialize(string):
+    if string == '[]':
+        return None
+    nodes = [None if val == 'null' else TreeNode(int(val)) for val in string.strip('[]{}').split(',')]
+    kids = nodes[::-1]
+    root = kids.pop()
+    for node in nodes:
+        if node:
+            if kids:
+                node.left = kids.pop()
+            if kids:
+                node.right = kids.pop()
+    return root
+
+
+def do_test(i: int, s, r):
+    c = Solution()
+    resp = c.inorderTraversal(deserialize(s))
+    if resp == r:
+        print("OK", i)
+    else:
+        print("NOK", i, "expected", r, "response", resp)
+
+
+if __name__ == "__main__":
+    do_test(0, "[1,null,2,3]", [1, 3, 2])
