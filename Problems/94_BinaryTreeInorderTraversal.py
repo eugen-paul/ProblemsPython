@@ -1,5 +1,5 @@
 # Definition for a binary tree node.
-from typing import List, Optional
+from typing import Deque, List, Optional
 
 
 class TreeNode:
@@ -16,6 +16,31 @@ class Solution:
 
         resp = list()
 
+        q = Deque()
+        q.append(root)
+        if root.left:
+            q.append(root.left)
+        root.left = None
+
+        while q:
+            node = q.pop()
+            if node.left != None:
+                q.append(node)
+                q.append(node.left)
+                node.left = None
+            elif node.val != None:
+                resp.append(node.val)
+                if node.right != None:
+                    q.append(node.right)
+
+        return resp
+
+    def inorderTraversal_1(self, root: Optional[TreeNode]) -> List[int]:
+        if root is None:
+            return list()
+
+        resp = list()
+
         if root.left:
             resp.extend(self.inorderTraversal(root.left))
         resp.append(root.val)
@@ -24,6 +49,8 @@ class Solution:
         return resp
 
 ##########################################
+
+
 class TreeNode:
     def __init__(self, val, left=None, right=None):
         self.val = val
@@ -59,4 +86,4 @@ if __name__ == "__main__":
     do_test(0, "[1,null,2,3]", [1, 3, 2])
     do_test(1, "[]", [])
     do_test(2, "[1]", [1])
-    do_test(3, "[1,10,2,3,null,4,5,6,7,null,null,null,8,11,12,13,14,15,16]", [11,6,12,3,13,7,14,10,1,4,2,5,15,8,16])
+    do_test(3, "[1,10,2,3,null,4,5,6,7,null,null,null,8,11,12,13,14,15,16]", [11, 6, 12, 3, 13, 7, 14, 10, 1, 4, 2, 5, 15, 8, 16])
