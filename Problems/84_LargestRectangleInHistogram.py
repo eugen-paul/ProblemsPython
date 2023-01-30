@@ -4,6 +4,22 @@ from typing import Deque, List
 
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
+        q: Deque[(int, int)] = Deque()
+
+        max_sq = 0
+
+        for i, n in enumerate(heights + [0]):
+            start_pos = i
+            while q and q[-1][0] > n:
+                max_el = q.pop()
+                max_sq = max(max_sq, max_el[0] * (i - max_el[1]))
+                start_pos = min(start_pos, max_el[1])
+            if n > 0:
+                q.append((n, start_pos))
+
+        return max_sq
+
+    def largestRectangleArea_2(self, heights: List[int]) -> int:
         if len(heights) == 1:
             return heights[0]
 
