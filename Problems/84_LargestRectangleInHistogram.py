@@ -1,9 +1,40 @@
 import heapq
-from typing import List
+from typing import Deque, List
 
 
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
+        if len(heights) == 1:
+            return heights[0]
+
+        q: Deque[(int, int)] = Deque()
+
+        max_sq = 0
+
+        for i, n in enumerate(heights):
+            if len(q) == 0:
+                if n > 0:
+                    q.append((n, i))
+            else:
+                start_pos = i
+                while q:
+                    max_el = q[-1]
+                    if max_el[0] < n:
+                        break
+                    q.pop()
+                    max_sq = max(max_sq, max_el[0] * (i - max_el[1]))
+                    start_pos = min(start_pos, max_el[1])
+                if n > 0:
+                    q.append((n, start_pos))
+
+        i = len(heights)
+        while q:
+            max_el = q.pop()
+            max_sq = max(max_sq, max_el[0] * (i - max_el[1]))
+
+        return max_sq
+
+    def largestRectangleArea_1(self, heights: List[int]) -> int:
         if len(heights) == 1:
             return heights[0]
 
