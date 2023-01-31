@@ -1,3 +1,4 @@
+from bisect import bisect_right
 from typing import Deque, Dict, List
 
 
@@ -30,6 +31,31 @@ class Solution:
             sc = max(sc, get_max(i))
 
         return sc
+
+    def bestTeamScore_i1(self, scores, ages):
+        """internet Solution"""
+        dp = [0]*(max(ages)+1)
+
+        for score, age in sorted(zip(scores, ages)):
+            dp[age] = max(dp[:age+1]) + score
+
+        return max(dp)
+
+    def bestTeamScore_i1(self, scores, ages):
+        """internet Solution"""
+        new_list = sorted(zip(ages, scores))
+        visited = [new_list[0][1]]
+        dp = [new_list[0][1]]
+        ans = new_list[0][1]
+
+        for i in range(1, len(new_list)):
+            s = new_list[i][1]
+            index = bisect_right(visited, s)
+            curr = max(dp[:index]) + s if index else s
+            ans = max(ans, curr)
+            visited.insert(index, s)
+            dp.insert(index, curr)
+        return ans
 
     def bestTeamScore_1(self, scores: List[int], ages: List[int]) -> int:
         ages_scores = list(zip(ages, scores))
@@ -69,11 +95,11 @@ def do_test(i: int, s, n, r):
 
 
 if __name__ == "__main__":
-    do_test(0, [1, 3, 5, 10, 15], [1, 2, 3, 4, 5], 34)
-    do_test(1, [4, 5, 6, 5], [2, 1, 2, 1], 16)
-    do_test(2, [1, 2, 3, 5], [8, 9, 10, 1], 6)
-    do_test(3, [2], [1], 2)
-    do_test(4, [1, 2, 3], [1, 1, 1], 6)
+    # do_test(0, [1, 3, 5, 10, 15], [1, 2, 3, 4, 5], 34)
+    # do_test(1, [4, 5, 6, 5], [2, 1, 2, 1], 16)
+    # do_test(2, [1, 2, 3, 5], [8, 9, 10, 1], 6)
+    # do_test(3, [2], [1], 2)
+    # do_test(4, [1, 2, 3], [1, 1, 1], 6)
     do_test(4, [3, 2, 1], [1, 1, 1], 6)
     do_test(5, [3, 3, 3], [1, 2, 3], 9)
     do_test(6, [4, 2, 3, 4, 5], [1, 2, 3, 4, 5], 14)
