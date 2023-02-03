@@ -71,8 +71,7 @@ class Solution:
         rev = None
         rev_end = None
 
-        end = ListNode(0)
-        end_end = end
+        end = None
 
         state = 0
         i = 1
@@ -95,11 +94,11 @@ class Solution:
                 if rev_end == None:
                     rev_end = rev
             else:
-                end_end.next = head
+                end = head
                 break
             i += 1
 
-        rev_end.next = end.next
+        rev_end.next = end
         start_end.next = rev
 
         return start.next
