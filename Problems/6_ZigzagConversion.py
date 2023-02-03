@@ -3,6 +3,30 @@ class Solution:
         if numRows == 1:
             return s
 
+        resp = [""] * numRows
+
+        count = 0
+        down = True
+
+        for c in s:
+            resp[count] += c
+            if down:
+                count += 1
+                if count == numRows:
+                    down = False
+                    count = numRows-2
+            else:
+                count -= 1
+                if count == -1:
+                    count = 1
+                    down = True
+
+        return "".join(resp)
+
+    def convert_1(self, s: str, numRows: int) -> str:
+        if numRows == 1:
+            return s
+
         down = True
         row = 0
 
