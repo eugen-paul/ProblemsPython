@@ -13,6 +13,8 @@ if __name__ == "__main__":
     do_test(0, "42", 42)
 
 ##########################################
+from typing import Optional
+
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
