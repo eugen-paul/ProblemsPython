@@ -1,3 +1,4 @@
+from itertools import product
 from typing import Dict, List, Optional, Tuple
 
 
@@ -10,6 +11,62 @@ class TreeNode:
 
 class Solution:
     def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+
+        m: Dict[Tuple[int, int], List[Optional[TreeNode]]] = dict()
+
+        def gen_tree(l: int, r: int) -> List[Optional[TreeNode]]:
+            if l > r:
+                return [None]
+            if l == r:
+                return [TreeNode(l)]
+
+            if (l,r) in m:
+                return m[(l,r)]
+
+            sub_resp = []
+            for i in range(l, r+1):
+                left = gen_tree(l, i-1)
+                right = gen_tree(i+1, r)
+
+                for le, ri in product(left, right):
+                    sub_resp.append(TreeNode(i, le, ri))
+
+            m[(l,r)] = sub_resp
+            return sub_resp
+
+        return gen_tree(1, n)
+
+    def generateTrees_2(self, n: int) -> List[Optional[TreeNode]]:
+        data = [x for x in range(1, n+1)]
+        resp = []
+
+        def gen_tree(r: int, left: List[int], right: List[int]) -> List[Optional[TreeNode]]:
+
+            left_trees = []
+            for sub_i, sub_n in enumerate(left):
+                left_trees.extend(gen_tree(sub_n, left[:sub_i], left[sub_i+1:]))
+            if len(left_trees) == 0:
+                left_trees.append(None)
+
+            right_trees = []
+            for sub_i, sub_n in enumerate(right):
+                right_trees.extend(gen_tree(sub_n, right[:sub_i], right[sub_i+1:]))
+            if len(right_trees) == 0:
+                right_trees.append(None)
+
+            sub_resp = []
+
+            for le, ri in product(left_trees, right_trees):
+                sub_resp.append(TreeNode(r, le, ri))
+
+            return sub_resp
+
+        for i in range(1, n+1):
+            resp.extend(gen_tree(i, data[:i-1], data[i:]))
+
+        return resp
+
+    def generateTrees_1(self, n: int) -> List[Optional[TreeNode]]:
 
         data = [x for x in range(1, n+1)]
         resp = []
@@ -27,7 +84,7 @@ class Solution:
                 left_trees.extend(gen_tree(sub_n, left[:sub_i], left[sub_i+1:]))
             if len(left_trees) == 0:
                 left_trees.append(None)
-            
+
             right_trees = []
             for sub_i, sub_n in enumerate(right):
                 right_trees.extend(gen_tree(sub_n, right[:sub_i], right[sub_i+1:]))
