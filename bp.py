@@ -52,6 +52,8 @@ if __name__ == "__main__":
     do_test(0, [1,2,4], [1,1,2,3,4,4])
 
 ##########################################
+from typing import List, Optional
+
 class TreeNode:
     def __init__(self, val, left=None, right=None):
         self.val = val
