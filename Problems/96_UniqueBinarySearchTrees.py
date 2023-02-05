@@ -3,6 +3,23 @@ from typing import List
 
 class Solution:
     def numTrees(self, n: int) -> int:
+        dp = [None] * (n+1)
+        dp[0] = 1
+
+        def get_rest(c: int) -> int:
+            if dp[c]:
+                return dp[c]
+
+            resp = 0
+            for i in range(1, c+1):
+                resp += get_rest(i-1) * get_rest(c-i)
+
+            dp[c] = resp
+            return resp
+
+        return get_rest(n)
+
+    def numTrees_1(self, n: int) -> int:
         dp = [0] * (n+1)
         dp[0] = 1
         dp[1] = 1
