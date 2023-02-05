@@ -3,6 +3,33 @@ from typing import Deque, List, Set, Tuple
 
 class Solution:
     def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        if len(s1) + len(s2) != len(s3):
+            return False
+
+        to_check = Deque()
+        to_check.append((0, 0))
+
+        m: Set[Tuple[int, int]] = set()
+        t3: int
+        while to_check:
+            t1, t2 = to_check.pop()
+            t3 = t1 + t2
+            if len(s1) == t1 and len(s2) == t2:
+                return True
+            if (t1, t2) in m:
+                continue
+
+            if len(s1) > t1 and s1[t1] == s3[t3]:
+                to_check.append((t1+1, t2))
+
+            if len(s2) > t2 and s2[t2] == s3[t3]:
+                to_check.append((t1, t2+1))
+
+            m.add((t1, t2))
+
+        return False
+
+    def isInterleave_2(self, s1: str, s2: str, s3: str) -> bool:
 
         to_check = Deque()
         to_check.append((0, 0, 0))
@@ -77,3 +104,4 @@ if __name__ == "__main__":
     do_test(5, "a", "", "a", True)
     do_test(6, "a", "a", "aa", True)
     do_test(7, "aa", "", "aa", True)
+    do_test(8, "aaaa", "aaab", "aaaabaaa", True)
