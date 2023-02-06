@@ -4,6 +4,14 @@ from typing import List
 class Solution:
     def shuffle(self, nums: List[int], n: int) -> List[int]:
         resp = []
+        for i in range(n):
+            resp.append(nums[i])
+            resp.append(nums[i+n])
+
+        return resp
+
+    def shuffle_2(self, nums: List[int], n: int) -> List[int]:
+        resp = []
         for c in zip(nums[:len(nums) // 2], nums[len(nums) // 2:]):
             resp.append(c[0])
             resp.append(c[1])
