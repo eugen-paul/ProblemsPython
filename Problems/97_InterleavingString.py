@@ -6,6 +6,27 @@ class Solution:
         if len(s1) + len(s2) != len(s3):
             return False
 
+        m = [[0] * (len(s2) + 1) for _ in range(len(s1) + 1)]
+        m[0][0] = 1
+
+        for row in range(len(s1) + 1):
+            for col in range(len(s2) + 1):
+                if row == col == 0:
+                    continue
+                if row == 0:
+                    m[row][col] = 1 if m[row][col-1] == 1 and s3[col-1] == s2[col-1] else 0
+                elif col == 0:
+                    m[row][col] = 1 if m[row-1][col] == 1 and s3[row-1] == s1[row-1] else 0
+                elif ((m[row-1][col] == 1 and s3[row+col-1] == s1[row-1])
+                      or (m[row][col-1] == 1 and s3[row+col-1] == s2[col-1])):
+                    m[row][col] = 1
+
+        return m[len(s1)][len(s2)] != 0
+
+    def isInterleave_3(self, s1: str, s2: str, s3: str) -> bool:
+        if len(s1) + len(s2) != len(s3):
+            return False
+
         to_check = Deque()
         to_check.append((0, 0))
 
@@ -105,3 +126,4 @@ if __name__ == "__main__":
     do_test(6, "a", "a", "aa", True)
     do_test(7, "aa", "", "aa", True)
     do_test(8, "aaaa", "aaab", "aaaabaaa", True)
+    do_test(9, "abcd", "ef", "abcdef", True)
