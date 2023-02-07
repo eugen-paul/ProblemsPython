@@ -23,6 +23,28 @@ class Solution:
             if node.left:
                 if node.val <= node.left.val or (min_root and min_root >= node.left.val):
                     return False
+                to_check.append((node.left, min_root, node.val))
+            if node.right:
+                if node.val >= node.right.val or (max_root and max_root <= node.right.val):
+                    return False
+                to_check.append((node.right, node.val, max_root))
+
+        return True
+
+    def isValidBST_2(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+
+        to_check = Deque()
+        to_check.append((root, None, None))
+
+        while to_check:
+            node, min_root, max_root = to_check.pop()
+            if not node:
+                continue
+            if node.left:
+                if node.val <= node.left.val or (min_root and min_root >= node.left.val):
+                    return False
                 to_check.append((
                     node.left,
                     min(node.val, min_root) if min_root else None,

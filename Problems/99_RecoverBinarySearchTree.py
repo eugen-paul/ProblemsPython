@@ -28,17 +28,42 @@ class Solution:
                 to_check.append((root, None, None))
             else:
                 if node.left:
-                    to_check.append((
-                        node.left,
-                        min(node.val, min_root) if min_root else None,
-                        min(node.val, max_root) if max_root else node.val,
-                    ))
+                    to_check.append((node.left, min_root, node.val))
                 if node.right:
-                    to_check.append((
-                        node.right,
-                        max(node.val, min_root) if min_root else node.val,
-                        max(node.val, max_root) if max_root else None
-                    ))
+                    to_check.append((node.right, node.val, max_root))
+
+    def recoverTree_inet(self, root: Optional[TreeNode]) -> None:
+        """
+        Internet solution
+        """
+        curr, prev, a, b = root, None, None, None
+        while curr:
+            if not curr.left:
+                # find the node that is violating the ordering
+                if prev and curr.val < prev.val:
+                    if not a:  # find the first node to swap
+                        a = prev
+                    b = curr
+                prev = curr
+                curr = curr.right
+            else:
+                temp = curr.left
+                while temp.right and temp.right is not curr:
+                    temp = temp.right
+                if temp.right is curr:
+                    temp.right = None
+                    if prev and curr.val < prev.val:
+                        if not a:
+                            a = prev
+                        b = curr
+                    prev = curr
+                    curr = curr.right
+                else:
+                    temp.right = curr
+                    curr = curr.left
+
+                # swap bide values
+        a.val, b.val = b.val, a.val
 
 
 def deserialize(string):
