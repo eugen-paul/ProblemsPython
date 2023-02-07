@@ -11,7 +11,34 @@ class TreeNode:
 
 
 class Solution:
+
     def recoverTree(self, root: Optional[TreeNode]) -> None:
+        sorted = Deque()
+
+        def add_to_sorted(node: Optional[TreeNode]):
+            if not node:
+                return
+            add_to_sorted(node.left)
+            sorted.append(node)
+            add_to_sorted(node.right)
+
+        add_to_sorted(root)
+
+        a = sorted[0]
+        for cur in sorted:
+            if a.val > cur.val:
+                break
+            a = cur
+
+        b = sorted[-1]
+        for cur in reversed(sorted):
+            if b.val < cur.val:
+                break
+            b = cur
+
+        a.val, b.val = b.val, a.val
+
+    def recoverTree_1(self, root: Optional[TreeNode]) -> None:
 
         to_check = Deque()
         to_check.append((root, None, None))
