@@ -3,13 +3,19 @@ from typing import Counter, List
 
 class Solution:
     def totalFruit(self, fruits: List[int]) -> int:
+        # type of fruit
         f1, f2 = -1, -1
+        # last position of fruit
         p1, p2 = -1, -1
+        # start of currend window
         start = 0
+        # maximum number of fruits
         max_len = 0
 
         for end, n in enumerate(fruits):
+            #current fruit is a new fruit type and basket is full
             if f1 >= 0 and f2 >= 0 and f1 != n and f2 != n:
+                #remove oldest fruit
                 if p1 > p2:
                     start = p2+1
                     f2 = n
