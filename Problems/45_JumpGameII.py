@@ -4,6 +4,21 @@ from typing import Dict, List
 class Solution:
 
     def jump(self, nums: List[int]) -> int:
+        if len(nums) == 1:
+            return 0
+        jumps = 0
+        last_max_jump = nums[0]
+        max_jump = nums[0]
+
+        for i,n in enumerate(nums):
+            if i > last_max_jump:
+                jumps+=1
+                last_max_jump = max_jump
+            max_jump = max(max_jump, n+i)
+
+        return jumps+1
+    
+    def jump_2(self, nums: List[int]) -> int:
         jumps = 0
         i = 0
 
