@@ -1,5 +1,8 @@
 # List of problems to be refactored
 
+## 102. Binary Tree Level Order Traversal
+Solve using a While loop.
+
 ## 460. LFU Cache
 The task was solved with a HashMap and an X-doubly linked list. The doubly linked list should be implemented as a class that can be used later.
 
