@@ -1,5 +1,5 @@
 import math
-from typing import Deque, Dict, List, Set
+from typing import DefaultDict, Deque, Dict, List, Set
 
 
 class Solution:
@@ -42,6 +42,24 @@ class Solution:
             resp += math.ceil(representatives / seats)
 
         return resp
+    
+    def minimumFuelCost_internet(self, roads: List[List[int]], seats: int) -> int:
+        """internet_solution"""
+        graph = DefaultDict(list)
+        for x, y in roads:
+            graph[x].append(y)
+            graph[y].append(x)
+        self.ans = 0
+        
+        def dfs(i, prev, people = 1):
+            for x in graph[i]:
+                if x == prev: continue
+                people += dfs(x, i)
+            self.ans += (int(math.ceil(people / seats)) if i else 0)
+            return people
+        
+        dfs(0, 0)
+        return self.ans
 
 
 def do_test(i: int, s, n, r):
