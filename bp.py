@@ -77,7 +77,31 @@ def deserialize(string):
                 node.right = kids.pop()
     return root
 
+def isSameTree(p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+    if p is None and q is None:
+        return True
+    if p is None or q is None or p.val != q.val:
+        return False
+    return isSameTree(p.left, q.left) and isSameTree(p.right, q.right)
 
+def levelOrder(root: Optional[TreeNode]) -> List[List[int]]:
+    resp = list()
+
+    def travel(node: Optional[TreeNode], level: int):
+        if not node:
+            return
+
+        if len(resp) <= level:
+            resp.append(list())
+
+        travel(node.left, level + 1)
+        resp[level].append(node.val)
+        travel(node.right, level + 1)
+
+    travel(root, 0)
+
+    return resp
+    
 def do_test(i: int, s, r):
     c = Solution()
     resp = c.inorderTraversal(deserialize(s))
