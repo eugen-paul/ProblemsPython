@@ -12,6 +12,23 @@ class TreeNode:
 
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        def compute_node(sub_io: List[int]) -> Optional[TreeNode]:
+            if len(preorder) == 0 or len(sub_io) == 0:
+                return None
+
+            node = TreeNode(preorder.pop(0))
+            try:
+                pos_left = sub_io.index(node.val)
+                node.left = compute_node(sub_io[:pos_left])
+                node.right = compute_node(sub_io[pos_left+1:])
+            except ValueError:
+                pass
+
+            return node
+
+        return compute_node(inorder)
+
+    def buildTree_1(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
         resp = TreeNode(preorder[0])
 
         def set_childs(node: TreeNode, in_left: List[int], in_right: List[int]) -> Optional[TreeNode]:
