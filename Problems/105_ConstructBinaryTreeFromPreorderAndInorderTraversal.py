@@ -17,12 +17,9 @@ class Solution:
                 return None
 
             node = TreeNode(preorder.pop(0))
-            try:
-                pos_left = sub_io.index(node.val)
-                node.left = compute_node(sub_io[:pos_left])
-                node.right = compute_node(sub_io[pos_left+1:])
-            except ValueError:
-                pass
+            pos_left = sub_io.index(node.val)
+            node.left = compute_node(sub_io[:pos_left])
+            node.right = compute_node(sub_io[pos_left+1:])
 
             return node
 
