@@ -1,5 +1,37 @@
 class Solution:
-    def addBinary(self, a: str, b: str) -> str:
+    
+    def addBinary_4(self, a: str, b: str) -> str:
+        cary = 0
+        k = 0
+        if len(b) > len(a):
+            a, b = b, a
+        resp = list()
+        for a_i in reversed(a):
+            if len(b) <= k:
+                b_i = 0
+            else:
+                b_i = b[len(b) - k - 1]
+            k += 1
+            if cary == 1 and a_i == b_i == "1":
+                resp.append("1")
+            elif cary == 1 and (a_i == "1" or b_i == "1"):
+                resp.append("0")
+            elif cary == 1:
+                cary = 0
+                resp.append("1")
+            elif cary == 0 and a_i == b_i == "1":
+                cary = 1
+                resp.append("0")
+            elif cary == 0 and (a_i == "1" or b_i == "1"):
+                resp.append("1")
+            elif cary == 0:
+                resp.append("0")
+
+        if cary == 1:
+            resp.append("1")
+        return "".join(reversed(resp))
+
+    def addBinary_3(self, a: str, b: str) -> str:
         resp = list()
         a = list(reversed(a))
         b = list(reversed(b))
