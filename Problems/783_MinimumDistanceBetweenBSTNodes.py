@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Deque, List, Optional
 
 
 class TreeNode:
@@ -12,7 +12,31 @@ class TreeNode:
 
 class Solution:
     def minDiffInBST(self, root: Optional[TreeNode]) -> int:
-        self.last_val = None
+        last_node = None
+        min_diff = 10_000_000
+
+        q = Deque()
+        q.append(root)
+
+        while q:
+            node = q.popleft()
+            if last_node:
+                min_diff = min(min_diff, abs(node.val - last_node.val))
+
+            if node.left:
+                q.appendleft(node)
+                q.appendleft(node.left)
+                node.left = None
+            elif node.right:
+                q.appendleft(node.right)
+                last_node = node
+            else:
+                last_node = node
+
+        return min_diff
+
+    def minDiffInBST_1(self, root: Optional[TreeNode]) -> int:
+        self.last_node = None
         self.min_diff = 10_000_000
 
         def get_dif(node: Optional[TreeNode]):
@@ -21,10 +45,10 @@ class Solution:
 
             get_dif(node.left)
 
-            if self.last_val:
-                self.min_diff = min(self.min_diff, abs(node.val - self.last_val.val))
+            if self.last_node:
+                self.min_diff = min(self.min_diff, abs(node.val - self.last_node.val))
 
-            self.last_val = node
+            self.last_node = node
 
             get_dif(node.right)
 
@@ -88,4 +112,6 @@ if __name__ == "__main__":
     do_test(1, "[1,0,48,null,null,12,49]", 1)
     do_test(2, "[10,5,48,null,null,12,61]", 2)
     do_test(3, "[27,null,34,null,58,50,null,44]", 6)
-    do_test(4, "[5,12]", 7)
+    do_test(4, "[12,5]", 7)
+    do_test(5, "[12,null,13]", 1)
+    do_test(6, "[96,12,null,null,13,null,52,29]", 1)
