@@ -1,5 +1,7 @@
-from typing import List
+from typing import List, Dict, Tuple, Counter
 
+        pass
+    
 def do_test(i: int, s, r):
     c = Solution()
     resp = c.myAtoi(s)
@@ -10,7 +12,7 @@ def do_test(i: int, s, r):
 
 
 if __name__ == "__main__":
-    do_test(0, "42", 42)
+    do_test(0, 42, 42)
 
 ##########################################
 from typing import Optional
