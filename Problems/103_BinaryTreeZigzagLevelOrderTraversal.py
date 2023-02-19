@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Deque, List, Optional
 
 
 class TreeNode:
@@ -12,6 +12,27 @@ class TreeNode:
 
 class Solution:
     def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        resp = list()
+
+        to_check = Deque()
+        to_check.append((root,0))
+
+        while to_check:
+            node,lev = to_check.pop()
+            if not node:
+                continue
+            if len(resp) <= lev:
+                resp.append(list())
+            resp[lev].append(node.val)
+            to_check.append((node.left,lev+1))
+            to_check.append((node.right,lev+1))
+
+        for i,q in enumerate(resp):
+            if i % 2 == 0:
+                q.reverse()
+        return resp
+    
+    def zigzagLevelOrder_1(self, root: Optional[TreeNode]) -> List[List[int]]:
         resp: List[List[int]] = list()
 
         def to_list(node: Optional[TreeNode], level: int):
