@@ -2,7 +2,22 @@ from typing import List
 
 
 class Solution:
-    def Solution(self, nums: List[int], target: int) -> int:
+
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        l, r = 0, len(nums)-1
+
+        while l <= r:
+            m = (r+l) // 2
+            if nums[m] == target:
+                return m
+            if nums[m] < target:
+                l = m+1
+            else:
+                r = m-1
+
+        return l
+
+    def searchInsert_1(self, nums: List[int], target: int) -> int:
         left = 0
         right = len(nums)-1
 
@@ -24,7 +39,7 @@ class Solution:
 
 def do_test(i: int, s, n, r):
     c = Solution()
-    resp = c.Solution(s, n)
+    resp = c.searchInsert(s, n)
     if resp == r:
         print("OK", i)
     else:
