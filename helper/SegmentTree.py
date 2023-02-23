@@ -71,7 +71,7 @@ class SegmentTree:
         res: int = self.std_res
 
         # loop to find the sum in the range
-        l += self.source_array_len + 1
+        l += self.source_array_len
         r += self.source_array_len + 1
 
         while l < r:
@@ -105,6 +105,7 @@ if __name__ == "__main__":
     tree.updateTreeNode(2, 1)
     tree.updateTreeNode(4, 1)
     print(tree.query(0, 6))
+    print(tree.query(10, 10))
 
     tree: SegmentTreeMin = SegmentTreeMin(a)
     print(tree.query(4, 10))
