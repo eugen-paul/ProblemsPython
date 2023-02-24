@@ -6,6 +6,32 @@ import bisect
 
 class Solution:
     def minimumDeviation(self, nums: List[int]) -> int:
+        s = []
+        min_val = inf
+        nums.sort()
+        last = -1
+        for n in nums:
+            if last == n:
+                continue
+            last = n
+            if n & 1 == 1:
+                n = n*2
+            heapq.heappush(s, -n)
+            min_val = min(min_val, n)
+
+        min_delta = inf
+        while True:
+            nxt = -heapq.heappop(s)
+            min_delta = min(min_delta, nxt - min_val)
+            if nxt & 1 == 1:
+                break
+            nxt = nxt // 2
+            min_val = min(min_val, nxt)
+            heapq.heappush(s, -nxt)
+
+        return min_delta
+
+    def minimumDeviation_1(self, nums: List[int]) -> int:
         for i, n in enumerate(nums):
             if n & 1 == 1:
                 nums[i] = n*2
@@ -44,3 +70,4 @@ if __name__ == "__main__":
     do_test(10, [11, 20, 18], 2)
     do_test(11, [3, 3, 3, 16], 1)
     do_test(12, [3, 1, 16], 1)
+    do_test(13, [3, 3, 3, 3, 3, 1, 1, 16], 1)
