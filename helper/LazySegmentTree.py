@@ -1,4 +1,3 @@
-from typing import List, Dict, Tuple, Counter
 from math import inf
 from typing import List
 
@@ -99,110 +98,74 @@ class LazySegmentTree:
         return self._get_sum_util(0, self.source_array_len - 1, qs, qe, 0)
 
 
-class LazySegmentTreeSwap (LazySegmentTree):
+class LazySegmentTreeMin (LazySegmentTree):
+    std_res = inf
+
+    def _op(self, a, b) -> int:
+        return min(a, b)
+
+
+class LazySegmentTreeMax (LazySegmentTree):
     std_res = -inf
 
     def _op(self, a, b) -> int:
-        return a+b
-
-    def _compute_tree_from_lazy(self, si: int, ss: int, se: int):
-        self.tree[si] = (se - ss + 1) - self.tree[si]
-
-    def _compute_lazy_from_lazy(self, si: int, sc: int):
-        self.lazy[sc] = (self.lazy[si] + self.lazy[sc]) % 2
-
-    def _compute_tree_from_diff(self, si: int, ss: int, se: int, diff: int):
-        self.tree[si] = (se - ss + 1) - self.tree[si]
-
-    def _compute_lazy_from_diff(self, sc: int, diff: int):
-        self.lazy[sc] = (diff + self.lazy[sc]) % 2
+        return max(a, b)
 
 
-class Solution:
-    def handleQuery(self, nums1: List[int], nums2: List[int], queries: List[List[int]]) -> List[int]:
-        tree = LazySegmentTreeSwap(nums1)
-        sum_2 = sum(nums2)
-
-        resp = list()
-        for q in queries:
-            if q[0] == 1:
-                tree.update_range(q[1], q[2], 1)
-            elif q[0] == 2:
-                sum_2 += tree.get_sum(0, len(nums1)-1) * q[1]
-            else:
-                resp.append(sum_2)
-
-        return resp
-
-    def handleQuery_inet(self, A, B, queries):
-        """internet_solution"""
-        x = sum(a << i for i, a in enumerate(A))
-        cur = sum(B)
-        res = []
-        for i, j, k in queries:
-            if i == 1:
-                x ^= (1 << j) - 1
-                x ^= (1 << k+1) - 1
-            elif i == 2:
-                cur += j * x.bit_count()
-            else:
-                res.append(cur)
-        return res
-
-    def handleQuery_2(self, nums1: List[int], nums2: List[int], queries: List[List[int]]) -> List[int]:
-        """better but still too slow"""
-        count_1 = sum(nums1)
-        sum_2 = sum(nums2)
-
-        resp = list()
-        for q in queries:
-            if q[0] == 1:
-                for i in range(q[1], q[2]+1):
-                    if nums1[i] == 0:
-                        nums1[i] = 1
-                        count_1 += 1
-                    else:
-                        nums1[i] = 0
-                        count_1 -= 1
-            elif q[0] == 2:
-                sum_2 += count_1 * q[1]
-            else:
-                resp.append(sum_2)
-
-        return resp
-
-    def handleQuery_1(self, nums1: List[int], nums2: List[int], queries: List[List[int]]) -> List[int]:
-        """too slow"""
-        resp = list()
-        for q in queries:
-            if q[0] == 1:
-                for i in range(q[1], q[2]+1):
-                    if nums1[i] == 0:
-                        nums1[i] = 1
-                    else:
-                        nums1[i] = 0
-            elif q[0] == 2:
-                nums2 = [a*q[1] + b for a, b in zip(nums1, nums2)]
-            else:
-                resp.append(sum(nums2))
-
-        return resp
-
-
-def do_test(i: int, s, n, k, r):
-    c = Solution()
-    resp = c.handleQuery(s, n, k)
-    if resp == r:
-        print("OK", i)
+def test(tree: LazySegmentTree, f: int, t: int, r: int) -> bool:
+    re = tree.get_sum(f, t)
+    if re == r:
+        print(f"from {f:2d} to {t:2d} = {re:2d}")
     else:
-        print("NOK", i, "expected", r, "response", resp)
+        print(f"from {f:2d} to {t:2d} = {re:2d}. ERROR. expected {r}")
 
 
 if __name__ == "__main__":
-    do_test(0,  [1, 0, 1], [0, 0, 0], [[1, 1, 1], [2, 1, 0], [3, 0, 0]], [3])
-    do_test(1,  [1], [5], [[2, 0, 0], [3, 0, 0]], [5])
-    do_test(2,
-            [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0],
-            [48, 2, 32, 25, 30, 37, 32, 18, 48, 39, 34, 19, 46, 43, 30, 22, 20, 35, 28, 3, 5, 45, 39, 21, 46, 45, 12, 15],
-            [[3, 0, 0], [2, 3, 0], [1, 10, 26], [2, 4, 0], [2, 18, 0]],
-            [819])
+    arr = [1, 2, 3, 4, 5]
+    tree = LazySegmentTree(arr)
+
+    print("initial")
+    test(tree, 0, 0, 1)
+    test(tree, 1, 1, 2)
+    test(tree, 2, 2, 3)
+    test(tree, 3, 3, 4)
+    test(tree, 4, 4, 5)
+    test(tree, 0, 1, 3)
+    test(tree, 0, 4, 15)
+    test(tree, 0, 3, 10)
+
+    print("add 4 to [0,3]")
+    tree.update_range(0, 3, 4)
+    test(tree, 0, 0, 5)
+    test(tree, 1, 1, 6)
+    test(tree, 2, 2, 7)
+    test(tree, 0, 1, 11)
+
+    print("add 10 to [0,4]")
+    tree.update_range(0, 4, 10)
+    print("add 1 to  [0,2]")
+    tree.update_range(0, 2, 1)
+    test(tree, 0, 1, 33)
+    test(tree, 2, 4, 51)
+    test(tree, 0, 4, 84)
+
+    arr = [1, 2, 3, 4, 5]
+    print("test min")
+    tree = LazySegmentTreeMin(arr)
+    test(tree, 0, 0, 1)
+    test(tree, 0, 4, 1)
+    test(tree, 3, 4, 4)
+
+    print("add 5 to [0,2]")
+    tree.update_range(0, 2, 5)
+    test(tree, 0, 0, 6)
+    test(tree, 0, 4, 4)
+    test(tree, 1, 3, 4)
+
+    print("add 1 to [1,3]")
+    tree.update_range(1, 3, 1)
+    print("add 3 to [2,4]")
+    tree.update_range(2, 4, 5)
+    test(tree, 0, 0, 6)
+    test(tree, 0, 4, 6)
+    test(tree, 1, 3, 8)
