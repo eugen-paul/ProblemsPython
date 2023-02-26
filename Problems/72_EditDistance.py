@@ -52,6 +52,31 @@ class Solution:
 
         return best
 
+    def minDistance_1(self, word1: str, word2: str) -> int:
+        m: Dict[str, int] = dict()
+
+        def sub(w1: str, w2: str) -> int:
+            if len(w1) == len(w2) and w1 == w2:
+                return 0
+
+            if len(w1) == 0 or len(w2) == 0:
+                return max(len(w1), len(w2))
+
+            if (w1, w2) in m:
+                return m[(w1, w2)]
+
+            resp = 0
+
+            if w1[0] == w2[0]:
+                resp = sub(w1[1:], w2[1:])
+            else:
+                resp = min(sub(w1[1:], w2) + 1, sub(w1, w2[1:]) + 1, sub(w1[1:], w2[1:]) + 1)
+
+            m[(w1, w2)] = resp
+            return resp
+
+        return sub(word1, word2)
+
     def minDistance_2(self, word1: str, word2: str) -> int:
         if len(word1) == 0 or len(word2) == 0:
             return max(len(word1), len(word2))
