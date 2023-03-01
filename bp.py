@@ -1,7 +1,7 @@
 from typing import List, Dict, Tuple, Counter
 
 
-    pass
+        pass
 
 
 def do_test(i: int, s, r):
