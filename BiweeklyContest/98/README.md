@@ -3,7 +3,7 @@
 
 | Results   | after Contest | after 5 Days |
 | ---       | ---           | ---          |
-| Solutions | 3 / 4         | 3 / 3        |
+| Solutions | 3 / 4         | 3 / 4        |
 | Score     | 12 / 19       | 12 / 19      |
 | Rank      | 1305 / 19433  | 1300 / 22683 |
 
