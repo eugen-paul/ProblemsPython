@@ -51,6 +51,7 @@ class Solution:
     2 2 1 3 4 1 4 2 2 
     """
     def countSubarrays(self, nums: List[int], minK: int, maxK: int) -> int:
+        """with internet help"""
         def get_count(sub_nums: List[int]) -> int:
             count = 0
             min_position = max_position = -1
