@@ -1,4 +1,5 @@
 from collections import defaultdict
+from math import inf
 from typing import Deque, List, Dict, Set, Tuple, Counter
 
 
@@ -9,7 +10,7 @@ class Solution:
          - Form the complete graph with the root edges[0][0]
          - Check how many matches there are with the guesses.
          - Change the root of the tree recursively.
-           - For each change, recalculate the number of matches. 
+           - For each change, recalculate the number of matches.
              - It is enough to check whether the affected node is in guesses or not.
         """
         tree: Dict[int, Set[int]] = defaultdict(set)
@@ -74,6 +75,53 @@ class Solution:
         visited.add(root)
         for nb in tree[root]:
             count_and_reroot(nb, ok_count)
+
+        return resp
+
+    def rootCount_i(self, edges: List[List[int]], guesses: List[List[int]], k: int) -> int:
+        """internet solution: https://leetcode.com/problems/count-number-of-possible-root-nodes/solutions/3256065/re-rooting-o-n-explained/
+        java -> python
+        """
+        tree: Dict[int, List[int]] = defaultdict(list)
+        guess_graph: Dict[int, Set[int]] = defaultdict(set)
+        parents: List[int] = [inf] * (len(edges)+1)
+        for f, t in edges:
+            tree[f].append(t)
+            tree[t].append(f)
+        for f, t in guesses:
+            guess_graph[f].add(t)
+
+        def fill_parent(node: int, parent: int):
+            parents[node] = parent
+            for child in tree[node]:
+                if child == parent:
+                    continue
+                fill_parent(child, node)
+
+        fill_parent(0, -1)
+
+        correct_guesses = 0
+        for i, p in enumerate(parents):
+            if i in guess_graph[p]:
+                correct_guesses += 1
+
+        resp = 1 if correct_guesses >= k else 0
+
+        def dfs(node: int, parent: int, correct_guesses: int):
+            cur: int = correct_guesses
+            if node in guess_graph[parent]:
+                cur -= 1
+            if parent in guess_graph[node]:
+                cur += 1
+            nonlocal resp
+            if cur >= k:
+                resp += 1
+            for child in tree[node]:
+                if (child != parent):
+                    dfs(child, node, cur)
+
+        for c in tree[0]:
+            dfs(c, 0, correct_guesses)
 
         return resp
 
