@@ -83,13 +83,13 @@ class Solution:
         java -> python
         """
         tree: Dict[int, List[int]] = defaultdict(list)
-        guess_graph: Dict[int, Set[int]] = defaultdict(set)
+        guess_graph: Set[Tuple[int,int]] = set()
         parents: List[int] = [inf] * (len(edges)+1)
         for f, t in edges:
             tree[f].append(t)
             tree[t].append(f)
         for f, t in guesses:
-            guess_graph[f].add(t)
+            guess_graph.add((f,t))
 
         def fill_parent(node: int, parent: int):
             parents[node] = parent
@@ -102,16 +102,16 @@ class Solution:
 
         correct_guesses = 0
         for i, p in enumerate(parents):
-            if i in guess_graph[p]:
+            if (p,i) in guess_graph:
                 correct_guesses += 1
 
         resp = 1 if correct_guesses >= k else 0
 
         def dfs(node: int, parent: int, correct_guesses: int):
             cur: int = correct_guesses
-            if node in guess_graph[parent]:
+            if (parent,node) in guess_graph:
                 cur -= 1
-            if parent in guess_graph[node]:
+            if (node,parent) in guess_graph:
                 cur += 1
             nonlocal resp
             if cur >= k:
