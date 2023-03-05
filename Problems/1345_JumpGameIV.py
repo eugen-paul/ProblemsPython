@@ -23,7 +23,7 @@ class Solution:
             visited[pos] = cost
 
             next_pos = m[arr[pos]]
-            # There is no more cheap way to the nodes
+            # There is no better way to reach the nodes anymore.
             m[arr[pos]] = set()
             if pos > 0:
                 next_pos.add(pos-1)
