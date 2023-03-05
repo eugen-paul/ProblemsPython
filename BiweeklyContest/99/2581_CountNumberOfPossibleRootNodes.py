@@ -1,4 +1,5 @@
 from collections import defaultdict
+from functools import cache
 from math import inf
 from typing import Deque, List, Dict, Set, Tuple, Counter
 
@@ -83,13 +84,13 @@ class Solution:
         java -> python
         """
         tree: Dict[int, List[int]] = defaultdict(list)
-        guess_graph: Set[Tuple[int,int]] = set()
+        guess_graph: Set[Tuple[int, int]] = set()
         parents: List[int] = [inf] * (len(edges)+1)
         for f, t in edges:
             tree[f].append(t)
             tree[t].append(f)
         for f, t in guesses:
-            guess_graph.add((f,t))
+            guess_graph.add((f, t))
 
         def fill_parent(node: int, parent: int):
             parents[node] = parent
@@ -102,16 +103,16 @@ class Solution:
 
         correct_guesses = 0
         for i, p in enumerate(parents):
-            if (p,i) in guess_graph:
+            if (p, i) in guess_graph:
                 correct_guesses += 1
 
         resp = 1 if correct_guesses >= k else 0
 
         def dfs(node: int, parent: int, correct_guesses: int):
             cur: int = correct_guesses
-            if (parent,node) in guess_graph:
+            if (parent, node) in guess_graph:
                 cur -= 1
-            if (node,parent) in guess_graph:
+            if (node, parent) in guess_graph:
                 cur += 1
             nonlocal resp
             if cur >= k:
@@ -124,6 +125,58 @@ class Solution:
             dfs(c, 0, correct_guesses)
 
         return resp
+
+    def rootCount_i2(self, edges: List[List[int]], guesses: List[List[int]], k: int) -> int:
+        """internet solution: https://leetcode.com/problems/count-number-of-possible-root-nodes/solutions/3256327/python-simple-dfs-with-cache-5-steps/
+        """
+        # Step 1 build the graph
+        # contains all the edges
+        # 0 -> 1,2,3 Node to list of Nodes
+        GRAPH = defaultdict(list)
+        # contains all the nodes
+        NODES = set()
+
+        for e in edges:
+            NODES.add(e[0])
+            NODES.add(e[1])
+            GRAPH[e[0]].append(e[1])
+            GRAPH[e[1]].append(e[0])
+
+        # Step 2 build a set of Guesses for fast access
+        # contains all the guesses
+        GUESSES = set()
+        for e in guesses:
+            GUESSES.add((e[0], e[1]))
+        # visited set
+        visited = set()
+
+        # Step 3 DFS
+        # cache the result with the node and previous
+        @cache
+        def dfs(node: int, previous: int) -> int:
+            guess_count = 0
+            if (previous, node) in GUESSES:
+                guess_count += 1
+
+            # add node to visited set
+            visited.add(node)
+
+            for next_node in GRAPH[node]:
+                if next_node not in visited:
+                    guess_count += dfs(next_node, node)
+
+            return guess_count
+
+        # Step 4 Try all  the  roots
+        result = 0
+        for node in NODES:
+            # if the root has k guesses, add 1 to the result
+            if dfs(node, -1) >= k:
+                result += 1
+            visited = set()
+
+        # Step 5 Return the result
+        return result
 
     def rootCount_X(self, edges: List[List[int]], guesses: List[List[int]], k: int) -> int:
         """total fail"""
