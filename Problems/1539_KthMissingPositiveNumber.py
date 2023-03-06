@@ -6,6 +6,23 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def findKthPositive(self, arr: List[int], k: int) -> int:
+        pos = 0
+        resp = 1
+        miss_count = 0
+        for i in range(1, k + arr[-1] + 1):
+            if pos >= len(arr):
+                return resp+k-miss_count-1
+            if arr[pos] == i:
+                pos += 1
+            else:
+                miss_count += 1
+                if miss_count == k:
+                    return resp
+            resp = i+1
+
+        return resp
+
+    def findKthPositive_2(self, arr: List[int], k: int) -> int:
         miss_count = 0
         pos = 0
         resp = 1
@@ -24,7 +41,7 @@ class Solution:
         s = set(arr)
         resp = 0
         miss = 0
-        for i in range(1, 2002):
+        for i in range(1, k + arr[-1] + 1):
             if i not in s:
                 miss += 1
                 resp = i
