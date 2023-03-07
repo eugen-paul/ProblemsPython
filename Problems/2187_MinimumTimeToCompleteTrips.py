@@ -11,8 +11,6 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def minimumTime(self, time: List[int], totalTrips: int) -> int:
-        time.sort()
-        
         def is_ok(t:int)->bool:
             rounds = 0
             for n in time:
@@ -20,7 +18,7 @@ class Solution:
             return rounds >= totalTrips
         
         l = 0
-        r = math.ceil(totalTrips * time[0])
+        r = math.ceil(totalTrips * min(time))
         
         while l <= r:
             m = (r+l) // 2
