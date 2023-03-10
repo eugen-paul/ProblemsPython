@@ -1,13 +1,15 @@
-from typing import Optional
+from typing import List, Optional
+
 
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
-        
-#----
 
-def from_list(data: ListNode):
+# ----
+
+
+def from_list(data: ListNode) -> List[int]:
     response = []
     cur = data
     while cur != None:
@@ -34,4 +36,4 @@ def do_test(i: int, s, r):
 
 
 if __name__ == "__main__":
-    do_test(0, [1,2,4], [1,1,2,3,4,4])
+    do_test(0, [1, 2, 4], [1, 1, 2, 3, 4, 4])
