@@ -18,6 +18,27 @@ class TreeNode:
 
 class Solution:
     def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        if not head:
+            return None
+
+        last = None
+        mid = head
+        fast = head
+
+        while fast and fast.next:
+            last = mid
+            mid = mid.next
+            fast = fast.next.next
+
+        resp = TreeNode(mid.val)
+        if last:
+            last.next = None
+            resp.left = self.sortedListToBST(head)
+        resp.right = self.sortedListToBST(mid.next)
+
+        return resp
+
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
         full_len = 0
         pointer = head
         while pointer:
