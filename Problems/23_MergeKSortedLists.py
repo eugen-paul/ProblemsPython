@@ -1,3 +1,4 @@
+import heapq
 from typing import List, Dict, Optional
 
 
@@ -9,6 +10,22 @@ class ListNode:
 
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        r = []
+        heapq.heapify(r)
+        for l in lists:
+            while l:
+                heapq.heappush(r, l.val)
+                l = l.next
+
+        resp = ListNode(0)
+        curr = resp
+        while r:
+            curr.next = ListNode(heapq.heappop(r))
+            curr = curr.next
+
+        return resp.next
+
+    def mergeKLists_3(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         """lol, this solution is faster as other"""
 
         data = []
@@ -18,7 +35,7 @@ class Solution:
                 l = l.next
 
         data.sort()
-        
+
         response = None
         for x in reversed(data):
             cur = ListNode(x, response)
