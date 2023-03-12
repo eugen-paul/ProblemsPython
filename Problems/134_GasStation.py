@@ -9,7 +9,7 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
-        def check_way(start: int) -> int:
+        def check_way_length(start: int) -> int:
             tank = gas[start]
             w = 0
             for i in range(start+1, len(gas) + start + 1):
@@ -24,11 +24,9 @@ class Solution:
         while True:
             if i >= len(gas):
                 break
-            w = 0
-            if cost[i] <= gas[i]:
-                w = check_way(i)
-                if w == len(gas):
-                    return i
+            w = check_way_length(i)
+            if w == len(gas):
+                return i
             i += w + 1
         return -1
 
