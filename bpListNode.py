@@ -9,6 +9,8 @@ class ListNode:
 # ----
 
 
+        pass
+
 def from_list(data: ListNode) -> List[int]:
     response = []
     cur = data
@@ -18,7 +20,7 @@ def from_list(data: ListNode) -> List[int]:
     return response
 
 
-def gen_list(data: list):
+def gen_list(data: list) -> ListNode:
     last = None
     for x in reversed(data):
         cur = ListNode(x, last)
