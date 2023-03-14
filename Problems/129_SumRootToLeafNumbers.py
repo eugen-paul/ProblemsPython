@@ -14,6 +14,24 @@ class Solution:
     def sumNumbers(self, root: Optional[TreeNode]) -> int:
         resp = 0
 
+        def walk(node: Optional[TreeNode], path: List[str]):
+            nonlocal resp
+            if not node:
+                return
+            if not node.left and not node.right:
+                resp += int("".join(path)) * 10 + node.val
+                return
+
+            walk(node.left, path + [str(node.val)])
+            walk(node.right, path + [str(node.val)])
+
+        walk(root, [str(0)])
+
+        return resp
+
+    def sumNumbers_1(self, root: Optional[TreeNode]) -> int:
+        resp = 0
+
         to_check: Deque[TreeNode, str] = Deque()
         to_check.append((root, ""))
 
@@ -85,3 +103,4 @@ def do_test(i: int, s, r):
 if __name__ == "__main__":
     do_test(0, "[1,2,3]", 25)
     do_test(1, "[4,9,0,5,1]", 1026)
+    do_test(2, "[0]", 0)
