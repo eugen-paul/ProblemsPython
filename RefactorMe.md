@@ -17,5 +17,8 @@ The task was solved with a HashMap and an X-doubly linked list. The doubly linke
 
 As an alternative, a solution with OrderedDict should be implemented.
 
+## 958. Check Completeness of a Binary Tree
+Check sample solution. 
+
 ## 2306. Naming a Company
 Refactor it. The solution is supposed to be faster and consume less memory.

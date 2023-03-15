@@ -10,7 +10,31 @@ class TreeNode:
 # ----
 
 
-        pass
+class Solution:
+
+    def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
+        max_lev = None
+        edit = False
+
+        def travel(node: Optional[TreeNode], cur_level: int) -> bool:
+            nonlocal max_lev
+            nonlocal edit
+
+            if not node:
+                if max_lev is None:
+                    max_lev = cur_level
+                    return True
+                if max_lev == cur_level:
+                    return True
+                if max_lev-1 == cur_level and not edit:
+                    max_lev = cur_level
+                    edit = True
+                    return True
+                return False
+
+            return travel(node.left, cur_level+1) and travel(node.right, cur_level+1)
+
+        return travel(root, 0)
 
 
 def deserialize(string: str):
@@ -65,4 +89,11 @@ def do_test(i: int, s, r):
 
 
 if __name__ == "__main__":
-    do_test(0, "[1,null,2,3]", [1, 3, 2])
+    do_test(0, "[1,2,3,4,5,6]", True)
+    do_test(1, "[1,2,3,4,5,null,7]", False)
+    do_test(2, "[1]", True)
+    do_test(3, "[1,null,2]", False)
+    do_test(4, "[1,2,3,4,5]", True)
+    do_test(5, "[1,2,3,4]", True)
+    do_test(6, "[1,2,3,4,5,6,null,8]", False)
+    do_test(7, "[1,2,3,null,null,6,7]", False)
