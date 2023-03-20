@@ -24,10 +24,7 @@ class Solution:
                 elif n == "-":
                     st.append(a-b)
                 elif n == "/":
-                    if a / b >= 0:
-                        st.append(a//b)
-                    else:
-                        st.append(math.ceil(a/b))
+                    st.append(int(a/b))
                 elif n == "*":
                     st.append(a*b)
 
