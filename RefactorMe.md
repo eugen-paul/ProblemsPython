@@ -12,6 +12,9 @@ Do it using use dynamic programming (determine which substrings are palindromes)
 ### 135. Candy
 redo
 
+### 152. Maximum Product Subarray
+redo
+
 ## 460. LFU Cache
 The task was solved with a HashMap and an X-doubly linked list. The doubly linked list should be implemented as a class that can be used later.
 
