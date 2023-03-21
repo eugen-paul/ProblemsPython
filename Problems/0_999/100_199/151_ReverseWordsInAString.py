@@ -10,6 +10,22 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def reverseWords(self, s: str) -> str:
+        resp = []
+        w = []
+        for c in s:
+            if c != " ":
+                w += [c]
+            elif len(w) > 0:
+                resp.append(" ")
+                resp.extend(reversed(w))
+                w.clear()
+        if len(w) > 0:
+            resp.append(" ")
+            resp.extend(reversed(w))
+
+        return "".join(reversed(resp[1:]))
+
+    def reverseWords_3(self, s: str) -> str:
         return " ".join(reversed(s.strip().split()))
 
     def reverseWords_2(self, s: str) -> str:
