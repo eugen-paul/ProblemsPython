@@ -9,6 +9,20 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def findMin(self, nums: List[int]) -> int:
+        l, r = 0, len(nums)-1
+        resp = 10_000
+        while l < r:
+            m = (r + l) // 2
+            if nums[l] <= nums[m]:
+                resp = min(resp, nums[l])
+                l = m + 1
+            elif nums[m] <= nums[r]:
+                resp = min(resp, nums[m])
+                r = m - 1
+
+        return min(resp, nums[l])
+
+    def findMin_2(self, nums: List[int]) -> int:
         if len(nums) == 1:
             return nums[0]
         if len(nums) == 0:
