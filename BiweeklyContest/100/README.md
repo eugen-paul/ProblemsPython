@@ -3,9 +3,9 @@
 
 | Results     | after Contest | after 5 Days |
 | ---         | ---           | ---          |
-| Solutions   | 4  / 4        | X / 4        |
+| Solutions   | 4  / 4        | 4 / 4        |
 | Score       | 16 / 16       | 16 / 16      |
-| Rank        | 1683 / 22847  | X / 22847    |
+| Rank        | 1683 / 22847  | 1682 / 22847 |
 | Finish Time | 1:23:43       | 1:23:43      |
 | Penalties   | 6             | 6            |
 
