@@ -9,6 +9,25 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def minReorder(self, n: int, connections: List[List[int]]) -> int:
+        m = defaultdict(set)
+        for f, t in connections:
+            m[f].add((t, True))
+            m[t].add((f, False))
+
+        to_check = Deque()
+        to_check.append((0, -1))
+        resp = 0
+        while to_check:
+            cur, last = to_check.pop()
+            for nxt, direction in m[cur]:
+                if nxt == last:
+                    continue
+                if direction:
+                    resp += 1
+                to_check.append((nxt, cur))
+        return resp
+
+    def minReorder_1(self, n: int, connections: List[List[int]]) -> int:
         roads = {(a, b) for a, b in connections}
         m = defaultdict(set)
         for f, t in connections:
