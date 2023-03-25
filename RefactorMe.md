@@ -15,6 +15,9 @@ redo
 ### 152. Maximum Product Subarray
 redo
 
+### 164. Maximum Gap
+learn bucket sort
+
 ## 460. LFU Cache
 The task was solved with a HashMap and an X-doubly linked list. The doubly linked list should be implemented as a class that can be used later.
 
