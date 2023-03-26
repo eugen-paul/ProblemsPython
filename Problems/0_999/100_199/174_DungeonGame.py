@@ -44,7 +44,9 @@ class Solution:
     def calculateMinimumHP_i(self, dungeon: List[List[int]]) -> int:
         """internet solution"""
         m, n = len(dungeon), len(dungeon[0])
+        #use df with extra space "n+1"
         dp = [[float('inf')] * (n+1) for _ in range(m+1)]
+        #set first neighbors to 1
         dp[m-1][n] = dp[m][n-1] = 1
         for i in range(m-1, -1, -1):
             for j in range(n-1, -1, -1):
