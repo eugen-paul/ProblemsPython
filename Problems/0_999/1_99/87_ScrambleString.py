@@ -2,9 +2,32 @@ from typing import Counter, Dict, List, Tuple
 
 
 class Solution:
+
     m: Dict[Tuple[str, str], bool] = dict()
 
     def isScramble(self, s1: str, s2: str) -> bool:
+        if s1 == s2:
+            return True
+
+        if (s1, s2) in self.m:
+            return self.m[(s1, s2)]
+
+        c1 = Counter(s1)
+        c2 = Counter(s2)
+        if c1 != c2:
+            self.m[(s1, s2)] = False
+            return False
+
+        for i in range(1, len(s1)):
+            if (self.isScramble(s1[:i], s2[:i]) and self.isScramble(s1[i:], s2[i:])) \
+                    or (self.isScramble(s1[:i], s2[-i:]) and self.isScramble(s1[i:], s2[:-i])):
+                self.m[(s1, s2)] = True
+                return True
+
+        self.m[(s1, s2)] = False
+        return False
+
+    def isScramble_2(self, s1: str, s2: str) -> bool:
         if s1 == s2:
             return True
 
