@@ -32,5 +32,5 @@ redo
 ## 2306. Naming a Company
 Refactor it. The solution is supposed to be faster and consume less memory.
 
-## 2607. Make K-Subarray Sums Equal
-TODO
+## 2608. Shortest Cycle in a Graph
+redo with union find
