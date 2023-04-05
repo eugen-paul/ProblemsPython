@@ -29,7 +29,7 @@ class Solution:
                 if node in sub_visited:
                     is_smallest = True
                     smallest = min(smallest, cost + sub_visited[node])
-                    break
+                    continue
                 sub_visited[node] = cost
                 for nxt in m[node]:
                     if nxt == last:
@@ -56,3 +56,4 @@ if __name__ == "__main__":
     do_test(2, 7, [[0, 1], [2, 0], [3, 4], [4, 5], [5, 6], [6, 3]], 4)
     do_test(3, 7, [[0, 1], [1, 2], [2, 0], [3, 4], [4, 5], [5, 6], [6, 3], [6, 3]], 3)
     do_test(4, 4, [[2, 1], [0, 2], [3, 0]], -1)
+    do_test(5, 8, [[7, 3], [1, 5], [0, 6], [3, 1], [6, 2], [7, 4], [3, 2], [5, 2], [6, 5], [0, 3]], 3)
