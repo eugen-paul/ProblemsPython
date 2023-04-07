@@ -11,41 +11,73 @@ class Solution:
 
     def maxProfit(self, k: int, prices: List[int]) -> int:
         """internet solution
-        https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/solutions/2909488/python-solution-faster-than-98-22-of-python-submissions-easy-to-read/
-        """
-        buy = [inf for _ in range(k+1)]
-        profit = [0 for _ in range(k+1)]
-        for currPrice in prices:
-            for i in range(1, k+1):
-                buy[i] = min(buy[i], currPrice - profit[i-1])
-                profit[i] = max(profit[i], currPrice - buy[i])
+        https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/solutions/2555676/python-simple-dp-o-nk-uses-the-idea-of-reinvesting/
 
-        return profit[k]
-    
-    def maxProfit_i2(self, k: int, prices: List[int]) -> int:
-        """internet solution
-        https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/solutions/2555699/leetcode-the-hard-way-7-lines-line-by-line-explanation/
+        Use the idea of "reinvesting", we can "carry-over" a
+        previous transaction into the next transaction in order
+        to calculate a total profit.
+
+        For example, given [3,2,6,5,7,0,3]
+
+        If k = 1, then we would keep track of the lowest price and
+        max profit for each day.
+
+            3, min_price [3], max_profit [0]
+            2, min_price [2], max_profit [0]
+            6, min_price [2], max_profit [4]
+            5, min_price [2], max_profit [4]
+            7, min_price [2], max_profit [5]
+            0, min_price [0], max_profit [5]
+            3, min_price [0], max_profit [5]
+
+        If k = 2, we want to understand how much money we could make
+        if we "reinvest" profit from k = 1. This means we could only
+        initiate a k=2 transaction IFF k=1 (on a previous day) has a
+        non-zero max_profit.
+
+            3, min_price [3, 3], max_profit [0, 0]
+            2, min_price [2, 2], max_profit [0, 0]
+            6, min_price [2, 2], max_profit [4, 4]
+            5, min_price [2, 1], max_profit [4, 4]  <- Reinvest profit
+            7, min_price [2, 1], max_profit [5, 6]
+            0, min_price [0, -5], max_profit [5, 6]
+            3, min_price [0, -5], max_profit [5, 8] <- Max profit with 2 transactions
+
+        Notice that the new min_price is $1 when price is $5. Similarly, the new min_price
+        is -$5 when price is $0. Why?
+
+        To understand, imagine if we bought at $2 and sold at $6. Then bought at $5
+        and sold at $7. That is two transactions with a total profit of
+        $4 + $2 = $6.
+
+        Alternative, we can also think of it as (-$2)(+$6)(-$5)(+$7). This means when
+        the stock is at $5, we will use our profit to bring its effective price
+        down to $1 (i.e. (-$2)(+$6)(-$5)). When we sell at $7, we capture a TOTAL
+        profit of $6. Our tabulation is cumulative.
+
+
+        If k = 3, we do the same thing:
+
+            3, min_price [3, 3, 3], max_profit [0, 0, 0]
+            2, min_price [2, 2, 2], max_profit [0, 0, 0]
+            6, min_price [2, 2, 2], max_profit [4, 4, 4]
+            5, min_price [2, 1, 1], max_profit [4, 4, 4]
+            7, min_price [2, 1, 1], max_profit [5, 6, 6]
+            0, min_price [0, -5, -6], max_profit [5, 6, 6]
+            3, min_price [0, -5, -6], max_profit [5, 8, 9]
         """
-        # no transaction, no profit
-        if k == 0: return 0
-        # dp[k][0] = min cost you need to spend at most k transactions
-        # dp[k][1] = max profit you can achieve at most k transactions
-        dp = [[1000, 0] for _ in range(k + 1)]
+        min_price = [float("inf")] * (k + 1)
+        max_profit = [0] * (k + 1)
+
         for price in prices:
             for i in range(1, k + 1):
-                # price - dp[i - 1][1] is how much you need to spend
-                # i.e use the profit you earned from previous transaction to buy the stock
-                # we want to minimize it
-                dp[i][0] = min(dp[i][0], price - dp[i - 1][1])
-                # price - dp[i][0] is how much you can achieve from previous min cost
-                # we want to maximize it
-                dp[i][1] = max(dp[i][1], price - dp[i][0])
-        # return max profit at most k transactions
-		# or you can write `return dp[-1][1]`
-        return dp[k][1]
+                min_price[i] = min(min_price[i], price - max_profit[i-1])
+                max_profit[i] = max(max_profit[i], price - min_price[i])
+
+        return max_profit[k]
 
     def maxProfit_s(self, k: int, prices: List[int]) -> int:
-        """slow"""
+        """slow but fast enough"""
         if len(prices) < 2:
             return 0
 
@@ -85,9 +117,11 @@ def do_test(i: int, s, n, r):
 
 if __name__ == "__main__":
     # do_test(0, 2, [2, 4, 1], 2)
-    do_test(1, 2, [3, 2, 6, 5, 0, 3], 7)
-    do_test(2, 2, [2, 1, 4, 5, 2, 9, 7], 11)
-    do_test(3, 29, [
+    # do_test(1, 2, [3, 2, 6, 5, 0, 3], 7)
+    # do_test(2, 2, [3, 2, 6, 5, 7, 0, 3], 8)
+    do_test(3, 3, [3, 2, 6, 5, 7, 0, 3], 9)
+    do_test(4, 2, [2, 1, 4, 5, 2, 9, 7], 11)
+    do_test(5, 29, [
         70, 4, 83, 56, 94, 72, 78, 43, 2, 86, 65, 100, 94, 56, 41, 66, 3, 33, 10, 3, 45, 94, 15, 12, 78, 60, 58, 0, 58, 15, 21, 7, 11, 41, 12, 96, 83, 77, 47, 62,
         27, 19, 40, 63, 30, 4, 77, 52, 17, 57, 21, 66, 63, 29, 51, 40, 37, 6, 44, 42, 92, 16, 64, 33, 31, 51, 36, 0, 29, 95, 92, 35, 66, 91, 19, 21, 100, 95, 40,
         61, 15, 83, 31, 55, 59, 84, 21, 99, 45, 64, 90, 25, 40, 6, 41, 5, 25, 52, 59, 61, 51, 37, 92, 90, 20, 20, 96, 66, 79, 28, 83, 60, 91, 30, 52, 55, 1, 99, 8,
@@ -113,7 +147,7 @@ if __name__ == "__main__":
         6, 23, 98, 22, 99, 21, 74, 75, 33, 67, 8, 80, 90, 23, 46, 93, 69, 85, 46, 87, 76, 93, 38, 77, 37, 72, 35, 3, 82, 11, 67, 46, 53, 29, 60, 33, 12, 62, 23, 27, 72, 35, 63,
         68, 14, 35, 27, 98, 94, 65, 3, 13, 48, 83, 27, 84, 86, 49, 31, 63, 40, 12, 34, 79, 61, 47, 29, 33, 52, 100, 85, 38, 24, 1, 16, 62, 89, 36, 74, 9, 49, 62, 89
     ], 2818)
-    do_test(4, 100, [
+    do_test(6, 100, [
         0, 1, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000,
         0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000,
         0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000, 0, 1000,
