@@ -19,6 +19,31 @@ class Node:
 class Solution:
 
     def cloneGraph(self, node: 'Node') -> 'Node':
+        if not node:
+            return None
+
+        m: Dict[Node, Node] = defaultdict(Node)
+        s: Set[Node] = set()
+
+        d: Deque[Node] = Deque()
+        d.append(node)
+        m[node].val = node.val
+        m[node].neighbors = []
+
+        while d:
+            nd = d.pop()
+            if nd in s:
+                continue
+            s.add(nd)
+
+            for nxt in nd.neighbors:
+                m[nd].val = nd.val
+                m[nd].neighbors.append(m[nxt])
+                d.append(nxt)
+
+        return m[node]
+
+    def cloneGraph_3(self, node: 'Node') -> 'Node':
         s: Set[int] = set()
         m: Dict[int, 'Node'] = dict()
 
@@ -40,7 +65,7 @@ class Solution:
 
         return rec(node)
 
-    def cloneGraph_1(self, node: 'Node') -> 'Node':
+    def cloneGraph_2(self, node: 'Node') -> 'Node':
         if not node:
             return None
         if not node.neighbors or len(node.neighbors) == 0:
