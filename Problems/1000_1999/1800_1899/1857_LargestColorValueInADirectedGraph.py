@@ -18,6 +18,60 @@ class Solution:
         if len(roots) == 0:
             return -1
 
+        def kahnAlgo(n: int, graph: Dict[int, Set[int]]) -> bool:
+            indegree: List[int] = [0] * n
+
+            for vals in graph.values():
+                for t in vals:
+                    indegree[t] += 1
+
+            q: List[int] = [x for x, v in enumerate(indegree) if v == 0]
+
+            nodes_seen = 0
+            while q:
+                node = q.pop(0)
+                nodes_seen += 1
+
+                for neighbor in graph[node]:
+                    indegree[neighbor] -= 1
+                    if indegree[neighbor] == 0:
+                        q.append(neighbor)
+
+            return nodes_seen == n
+
+        if not kahnAlgo(len(colors), g):
+            return -1
+
+        def get_color_count(m: Dict[int, int], node: int, color: str) -> int:
+            if node in m:
+                return m[node]
+
+            resp = 1 if colors[node] == color else 0
+
+            best = 0
+            for nxt in g[node]:
+                best = max(best, get_color_count(m, nxt, color))
+
+            m[node] = best + resp
+            return best + resp
+
+        resp = 0
+        for color in set(colors):
+            m: Dict[int, int] = dict()
+            for root in roots:
+                resp = max(resp, get_color_count(m, root, color))
+
+        return resp
+
+    def largestPathValue_1(self, colors: str, edges: List[List[int]]) -> int:
+        roots = set(range(len(colors)))
+        g = defaultdict(set)
+        for f, t in edges:
+            g[f].add(t)
+            roots.discard(t)
+        if len(roots) == 0:
+            return -1
+
         visited = set()
         checking = set()
 
