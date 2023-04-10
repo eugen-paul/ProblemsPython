@@ -1,5 +1,26 @@
+from typing import Deque
+
+
 class Solution:
     def isValid(self, s: str) -> bool:
+        d=Deque()
+
+        for c in s:
+            if c in "{([":
+                d.append(c)
+            elif len(d) == 0:
+                return False
+            elif c == ')' and d.pop() == "(":
+                continue
+            elif c == ']' and d.pop() == "[":
+                continue
+            elif c == '}' and d.pop() == "{":
+                continue
+            else:
+                return False
+        return len(d) == 0
+    
+    def isValid_(self, s: str) -> bool:
         last_brackets = []
 
         for c in s:
