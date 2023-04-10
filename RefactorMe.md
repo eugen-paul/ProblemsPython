@@ -21,6 +21,9 @@ learn bucket sort
 ### 188. Best Time to Buy and Sell Stock IV
 redo
 
+### 224. Basic Calculator
+Do it better.
+
 ## 460. LFU Cache
 The task was solved with a HashMap and an X-doubly linked list. The doubly linked list should be implemented as a class that can be used later.
 
