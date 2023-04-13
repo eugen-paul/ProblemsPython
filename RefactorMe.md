@@ -24,6 +24,9 @@ redo
 ### 224. Basic Calculator
 Do it better.
 
+### 312. Burst Balloons
+redo
+
 ## 460. LFU Cache
 The task was solved with a HashMap and an X-doubly linked list. The doubly linked list should be implemented as a class that can be used later.
 
