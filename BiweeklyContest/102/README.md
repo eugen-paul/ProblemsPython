@@ -11,4 +11,4 @@
 
 - Problem 1: It took me too long to understand the task.
 
-Happiness with my performance: 6/10
+Happiness with my performance: 8/10
