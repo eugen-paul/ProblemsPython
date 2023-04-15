@@ -4,7 +4,7 @@
 | Results     | after Contest | after 5 Days |
 | ---         | ---           | ---          |
 | Solutions   | 3  / 4        | 2 / 4        |
-| Score       | 13 / 18       | X / 18       |
+| Score       | 13 / 18       | 7 / 18       |
 | Rank        | 2060 / 22282  | 5683 / 22282 |
 | Finish Time | 0:53:29       | 0:20:52      |
 | Penalties   | 2             | 2            |
