@@ -21,6 +21,9 @@ learn bucket sort
 ### 188. Best Time to Buy and Sell Stock IV
 redo
 
+### 212. 212. Word Search II
+Do it with Tries.
+
 ### 224. Basic Calculator
 Do it better.
 
