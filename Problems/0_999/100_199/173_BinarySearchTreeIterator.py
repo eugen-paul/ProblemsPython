@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Generator, Optional
 
 
 class TreeNode:
@@ -24,6 +24,78 @@ def deserialize(string: str):
 
 
 class BSTIterator:
+    def __init__(self, root: Optional[TreeNode]):
+        self.buffer = []
+        self.cur = root
+
+        while self.cur:
+            self.buffer.append(self.cur)
+            self.cur = self.cur.left
+
+    def next(self) -> int:
+        self.cur = self.buffer.pop()
+        resp = self.cur.val
+
+        if self.cur.right:
+            self.cur = self.cur.right
+            while self.cur:
+                self.buffer.append(self.cur)
+                self.cur = self.cur.left
+
+        return resp
+
+    def hasNext(self) -> bool:
+        return len(self.buffer) > 0
+
+
+class BSTIterator_i:
+    """nice internet solution:
+    https://leetcode.com/problems/binary-search-tree-iterator/solutions/1965156/python-tc-o-1-sc-o-h-generator-solution/?languageTags=python3
+    """
+    def __init__(self, root: Optional[TreeNode]):
+        self.iter = self._inorder(root)
+        self.nxt = next(self.iter, None)
+    
+    def _inorder(self, node: Optional[TreeNode]) -> Generator[int, None, None]:
+        if node:
+            yield from self._inorder(node.left)
+            yield node.val
+            yield from self._inorder(node.right)
+
+    def next(self) -> int:
+        res, self.nxt = self.nxt, next(self.iter, None)
+        return res
+
+    def hasNext(self) -> bool:
+        return self.nxt is not None
+
+
+class BSTIterator:
+    def __init__(self, root: Optional[TreeNode]):
+        self.buffer = []
+        self.cur = root
+
+        while self.cur:
+            self.buffer.append(self.cur)
+            self.cur = self.cur.left
+
+    def next(self) -> int:
+        self.cur = self.buffer.pop()
+        resp = self.cur.val
+
+        if self.cur.right:
+            self.cur = self.cur.right
+            while self.cur:
+                self.buffer.append(self.cur)
+                self.cur = self.cur.left
+
+        return resp
+
+    def hasNext(self) -> bool:
+        return len(self.buffer) > 0
+
+
+class BSTIterator_1:
 
     def __init__(self, root: Optional[TreeNode]):
         self.buffer = []
