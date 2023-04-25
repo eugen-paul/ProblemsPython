@@ -80,6 +80,29 @@ class SmallestInfiniteSet_i:
         self.is_present.add(num)
 
 
+class SmallestInfiniteSet_i:
+    """internet solution
+    https://leetcode.com/problems/smallest-number-in-infinite-set/solutions/3452343/python3-beats-95-5-and-99-45-quibler7/
+    """
+
+    def __init__(self):
+        self.curr = 1
+        self.set = set()
+
+    def popSmallest(self) -> int:
+        if self.set:
+            ans = min(self.set)
+            self.set.remove(ans)
+            return ans
+        else:
+            self.curr += 1
+            return self.curr - 1
+
+    def addBack(self, num: int) -> None:
+        if self.curr > num:
+            self.set.add(num)
+
+
 def do_test(i: int, s, n, r):
     ob: SmallestInfiniteSet
     for j, c in enumerate(s):
