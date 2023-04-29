@@ -39,6 +39,26 @@ class UnionFind_by_rank:
 
 class Solution:
     def distanceLimitedPathsExist(self, n: int, edgeList: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        """using sample solution"""
+        uf = UnionFind_by_rank(n)
+
+        edgeList.sort(key=lambda x: x[2])
+        q = [[i, v] for i, v in enumerate(queries)]
+        q.sort(key=lambda x: x[1][2])
+
+        resp = [False] * len(queries)
+
+        k = 0
+        for i, v in q:
+            f, t, c = v
+            while k < len(edgeList) and edgeList[k][2] < c:
+                uf.union(edgeList[k][0], edgeList[k][1])
+                k += 1
+            resp[i] = uf.connected(f, t)
+
+        return resp
+
+    def distanceLimitedPathsExist_1(self, n: int, edgeList: List[List[int]], queries: List[List[int]]) -> List[bool]:
         uf = UnionFind_by_rank(n)
 
         full = [(1, f, t, c, 0) for f, t, c in edgeList]
