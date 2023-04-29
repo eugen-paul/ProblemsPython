@@ -1,5 +1,10 @@
+from collections import defaultdict
+from functools import cache
 from math import inf
-from typing import List
+from typing import Deque, List, Dict, Set, Tuple, Counter
+
+# import sys
+# sys.setrecursionlimit(10000)
 
 
 class SegmentTree:
@@ -88,26 +93,54 @@ class SegmentTree:
         return res
 
 
-class SegmentTreeMin (SegmentTree):
-    std_res = inf
+class Solution:
 
-    def _op(self, a, b) -> int:
-        return min(a, b)
+    def countOperationsToEmptyArray(self, nums: List[int]) -> int:
+        """using internet help"""
+        a = [1 for _ in nums]
+        seg = SegmentTree(a)
+
+        s = [(n, i) for i, n in enumerate(nums)]
+        s.sort()
+
+        resp = 0
+        pos = 0
+        for _, i in s:
+            if i >= pos:
+                resp += seg.query(pos, i)
+            else:
+                resp += seg.query(pos, len(nums)-1)
+                resp += seg.query(0, i)
+            seg.updateTreeNode(i, 0)
+            pos = i
+
+        return resp
+
+    def countOperationsToEmptyArray_1(self, nums: List[int]) -> int:
+        """too slow"""
+        s = sorted(nums)
+        resp = 0
+        while s:
+            if nums[0] != s[0]:
+                nums.append(nums.pop(0))
+            else:
+                s.pop(0)
+                nums.pop(0)
+            resp += 1
+        return resp
 
 
-# Driver Code
+def do_test(i: int, s, r):
+    c = Solution()
+    resp = c.countOperationsToEmptyArray(s)
+    if resp == r:
+        print("OK", i)
+    else:
+        print("NOK", i, "expected", r, "response", resp)
+
+
 if __name__ == "__main__":
-    a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-
-    tree: SegmentTree = SegmentTree(a)
-
-    print(tree.query(0, 6))
-    tree.updateTreeNode(2, 1)
-    tree.updateTreeNode(4, 1)
-    print(tree.query(0, 6))
-    print(tree.query(10, 10))
-
-    tree: SegmentTreeMin = SegmentTreeMin(a)
-    print(tree.query(4, 10))
-    tree.updateTreeNode(6, 2)
-    print(tree.query(4, 10))
+    do_test(0, [3, 4, -1], 5)
+    do_test(1, [1, 2, 4, 3], 5)
+    do_test(2, [1, 2, 3], 3)
+    do_test(3, [-15, -19, 5], 5)
