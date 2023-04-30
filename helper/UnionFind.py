@@ -13,12 +13,14 @@ class UnionFind_by_rank:
     # Union:                  O(logN)
     # Connected:              O(logN)
 
-    parent: List[int]
+    root: List[int]
     rank: List[int]
+    # components: int #Number of distinct components in the graph.
 
     def __init__(self, size: int):
         self.root = [i for i in range(size)]
         self.rank = [1] * size
+        # self.components = size
 
     def find(self, x: int):
         """The find function finds the root node of a given vertex.
@@ -50,6 +52,7 @@ class UnionFind_by_rank:
             else:
                 self.root[root_y] = root_x
                 self.rank[root_x] += 1
+            # self.components-=1
 
     def connected(self, x: int, y: int) -> bool:
         """check if two vertices are connected 
@@ -58,6 +61,12 @@ class UnionFind_by_rank:
             bool: there is a path from x to y / from y to x
         """
         return self.find(x) == self.find(y)
+
+    def copy(self) -> 'UnionFind_by_rank':
+        resp = UnionFind_by_rank(1)
+        resp.root = list(self.root)
+        resp.rank = list(self.rank)
+        return resp
 
 
 class UnionFind_QuickUnion:
