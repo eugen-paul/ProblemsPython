@@ -1,6 +1,7 @@
 from typing import Any, Generic, Optional, TypeVar
 
 T = TypeVar('T')
+#T = TypeVar('T', bound=str)
 
 
 class DLLNode(Generic[T]):
