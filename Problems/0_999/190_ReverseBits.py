@@ -10,6 +10,11 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 class Solution:
     def reverseBits(self, n: int) -> int:
         s = f'{n:032b}'
+        s = s[::-1]
+        return int(s, 2)
+
+    def reverseBits_1(self, n: int) -> int:
+        s = f'{n:032b}'
         s = "".join(reversed(s))
         return int(s, 2)
 
