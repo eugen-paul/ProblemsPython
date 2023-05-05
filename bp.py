@@ -6,7 +6,7 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 # import sys
 # sys.setrecursionlimit(10000)
 
-    pass
+        pass
 
 
 def do_test(i: int, s, r):
