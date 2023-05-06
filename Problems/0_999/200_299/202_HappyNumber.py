@@ -9,6 +9,24 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def isHappy(self, n: int) -> bool:
+        """sample solution"""
+        def nxt(n) -> int:
+            tmp = 0
+            while n:
+                rest = n % 10
+                tmp += rest*rest
+                n = n//10
+            return tmp
+
+        slow = nxt(n)
+        fast = nxt(slow)
+
+        while slow != fast:
+            slow = nxt(slow)
+            fast = nxt(nxt(fast))
+        return slow == 1
+
+    def isHappy_1(self, n: int) -> bool:
         SEEN = set()
 
         while n != 1:
