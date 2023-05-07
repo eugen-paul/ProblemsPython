@@ -71,7 +71,7 @@ class LazySegmentTree:
     def update_range(self, us: int, ue: int, diff: int):
         self._update_range_util(0, 0, self.source_array_len - 1, us, ue, diff)
 
-    def _get_sum_util(self, ss: int, se: int, qs: int, qe: int, si: int) -> int:
+    def _do_query_util(self, ss: int, se: int, qs: int, qe: int, si: int) -> int:
         if (self.lazy[si] != 0):
             self._compute_tree_from_lazy(si, ss, se)
             if (ss != se):
@@ -86,16 +86,16 @@ class LazySegmentTree:
             return self.tree[si]
 
         mid = (ss + se) // 2
-        res_left = self._get_sum_util(ss, mid, qs, qe, 2 * si + 1)
-        res_right = self._get_sum_util(mid + 1, se, qs, qe, 2 * si + 2)
+        res_left = self._do_query_util(ss, mid, qs, qe, 2 * si + 1)
+        res_right = self._do_query_util(mid + 1, se, qs, qe, 2 * si + 2)
         return self._op(res_left, res_right)
 
-    def get_sum(self, qs: int, qe: int) -> int:
+    def do_query(self, qs: int, qe: int) -> int:
         if (qs < 0 or qs > qe):
             print("Invalid Input")
             return -1
 
-        return self._get_sum_util(0, self.source_array_len - 1, qs, qe, 0)
+        return self._do_query_util(0, self.source_array_len - 1, qs, qe, 0)
 
 
 class LazySegmentTreeMin (LazySegmentTree):
@@ -113,7 +113,7 @@ class LazySegmentTreeMax (LazySegmentTree):
 
 
 def test(tree: LazySegmentTree, f: int, t: int, r: int) -> bool:
-    re = tree.get_sum(f, t)
+    re = tree.do_query(f, t)
     if re == r:
         print(f"from {f:2d} to {t:2d} = {re:2d}")
     else:
