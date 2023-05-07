@@ -75,8 +75,8 @@ def do_test(i: int, s, n, k, r):
 
 
 if __name__ == "__main__":
-    # do_test(0, [1, 2, 3, 1], 3, 0, True)
-    # do_test(1, [1, 5, 9, 1, 5, 9], 2, 3, False)
+    do_test(0, [1, 2, 3, 1], 3, 0, True)
+    do_test(1, [1, 5, 9, 1, 5, 9], 2, 3, False)
     do_test(2, [1, 5, 9, 1, 5, 9], 2, 1, False)
     do_test(3, [1, 5, 9, 1, 5, 9, 10], 2, 3, True)
     do_test(4, [1, 2, 1, 1], 1, 0, True)
