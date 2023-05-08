@@ -1,6 +1,3 @@
-from itertools import permutations
-
-
 cases = int(input())
 
 for _ in range(cases):
