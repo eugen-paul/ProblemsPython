@@ -21,4 +21,4 @@ for _ in range(cases):
             down = True
             resp[i] = i
 
-    print(" ".join([str(x) for x in resp]))
+    print(*resp)
