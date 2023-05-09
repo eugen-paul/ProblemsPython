@@ -3,6 +3,50 @@ from typing import List
 
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        resp = []
+
+        def rotate_90_degree_anticlckwise( m ):
+            return [[m[j][i] for j in range(len(m))] for i in range(len(m[0])-1,-1,-1)]
+
+        def rotate_90_degree_clckwise(matrix):
+            return list(list(x)[::-1] for x in zip(*matrix))
+
+        matrix = rotate_90_degree_clckwise(matrix)
+        while matrix:
+            matrix = rotate_90_degree_anticlckwise(matrix)
+            resp.extend(matrix[0])
+            matrix.pop(0)
+        return resp
+
+    def spiralOrder_3(self, matrix: List[List[int]]) -> List[int]:
+        resp = []
+
+        r = 0
+        while matrix:
+            if r == 0:
+                resp.extend(matrix[0])
+                matrix.pop(0)
+                r = 1
+            elif r == 1:
+                for i in range(len(matrix)):
+                    resp.append(matrix[i][-1])
+                    matrix[i].pop()
+                r = 2
+            elif r == 2:
+                resp.extend(matrix[-1][::-1])
+                matrix.pop()
+                r = 3
+            else:
+                for i in range(len(matrix)-1, -1, -1):
+                    resp.append(matrix[i][0])
+                    matrix[i].pop(0)
+                r = 0
+            if matrix and len(matrix[0]) == 0:
+                break
+
+        return resp
+
+    def spiralOrder_2(self, matrix: List[List[int]]) -> List[int]:
         resp = list()
 
         while len(matrix) > 0:
