@@ -3,6 +3,44 @@ from typing import List
 
 class Solution:
     def generateMatrix(self, n: int) -> List[List[int]]:
+        resp = [[0]*n for _ in (range(n))]
+
+        x, y = 0, 0
+        v = 1
+        d = 0
+        steps = 0
+        while steps != n*n:
+            resp[y][x] = v
+            steps += 1
+            v += 1
+            if d == 0:
+                if x < n-1 and resp[y][x+1] == 0:
+                    x += 1
+                else:
+                    y += 1
+                    d = 1
+            elif d == 1:
+                if y < n-1 and resp[y+1][x] == 0:
+                    y += 1
+                else:
+                    x -= 1
+                    d = 2
+            elif d == 2:
+                if x > 0 and resp[y][x-1] == 0:
+                    x -= 1
+                else:
+                    y -= 1
+                    d = 3
+            else:
+                if y > 0 and resp[y-1][x] == 0:
+                    y -= 1
+                else:
+                    x += 1
+                    d = 0
+
+        return resp
+
+    def generateMatrix_2(self, n: int) -> List[List[int]]:
         if n == 1:
             return [[1]]
 
