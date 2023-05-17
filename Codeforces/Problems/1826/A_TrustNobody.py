@@ -16,13 +16,15 @@ for _ in range(int(input())):
     l = i_array_int()
 
     ans = -1
-    for i in range(n):
-        cnt = 0
-        for k in l:
-            if i < k:
-                cnt += 1
-        if i == cnt:
-            ans = i
+    # iterate over the number of liars
+    for liars in range(n):
+        # count the actual number of liars
+        liars_cnt = 0
+        for person_says in l:
+            if liars < person_says:
+                liars_cnt += 1
+        if liars == liars_cnt:
+            ans = liars
             break
 
     print(ans)
