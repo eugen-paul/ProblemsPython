@@ -14,24 +14,40 @@ def i_matrix_int(h: int) -> List[List[int]]:
 for _ in range(int(input())):
     n = int(input())
     l = i_array_int()
-    c = Counter(l)
-
-    s = []
-    for i, v in c.items():
-        s.append((i, v))
-    s.sort()
 
     ans = -1
-    cnt = 0
-    for i, v in s:
-        cnt += v
-        rest = n-cnt
-        if rest >= i:
-            ans = rest
-        elif ans >= i:
-            ans = -1
-            break
-        else:
+    for i in range(n):
+        cnt = 0
+        for k in l:
+            if i < k:
+                cnt += 1
+        if i == cnt:
+            ans = i
             break
 
     print(ans)
+
+# for _ in range(int(input())):
+#     n = int(input())
+#     l = i_array_int()
+#     c = Counter(l)
+
+#     s = []
+#     for i, v in c.items():
+#         s.append((i, v))
+#     s.sort()
+
+#     ans = -1
+#     cnt = 0
+#     for i, v in s:
+#         cnt += v
+#         rest = n-cnt
+#         if rest >= i:
+#             ans = rest
+#         elif ans >= i:
+#             ans = -1
+#             break
+#         else:
+#             break
+
+#     print(ans)
