@@ -23,6 +23,6 @@ for _ in range(int(input())):
     a.sort(key=lambda x: x[1])
     b.sort()
     b = [(i, x) for i, x in enumerate(b)]
-    b.sort(key=lambda x: a[x[0]][0])
+    b.sort(key=lambda x, a=a: a[x[0]][0])
 
     print(" ".join(str(x) for _, x in b))

@@ -13,6 +13,13 @@ def i_matrix_int(h: int) -> List[List[int]]:
     return [list(map(int, input().split())) for _ in range(h)]
 
 
+MOD = 10**9+7
+
+
+def inv(x):
+    return pow(x % MOD, MOD - 2, MOD)
+
+
 for _ in range(int(input())):
     n = int(input())
     a = i_array_int()

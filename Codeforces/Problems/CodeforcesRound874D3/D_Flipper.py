@@ -25,13 +25,21 @@ for _ in range(int(input())):
     max_pos = b[len(a)]
     max_pos2 = b[len(a)-1]
 
+    # target array must start with max value (n) or with second max value (n-1) if n ist on position 0
     if max_pos == 0:
         max_pos = max_pos2
 
+    # Cases:
+    # 1. a[max_pos:] is the third part
+    # 2. a[max]      is the second part if a[max] ist last element
+    # 3. a[::-1]     if a[max] ist last element (this case with covered with the case one)
     v1 = [0] * max_pos
+
+    # check 2.
     if max_pos == len(a) - 1:
         v1 = [a[-1]] + a[:len(a)-1:]
 
+    # check 1. and 3.
     check = [0] * max_pos
     for i in range(max_pos):
         tmp = a[i:max_pos][::-1] + a[:i]
