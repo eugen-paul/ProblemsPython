@@ -107,3 +107,41 @@ for _ in range(int(input())):
     else:
         print(len(resp))
         print(" ".join([str(x) for x in resp]))
+
+
+# alternative solution (from internet)
+def alt_sol():
+    def dfs(cur, parent):
+        rest = 1
+        for e in edge[cur]:
+            if e != parent:
+                rest += dfs(e, cur)
+        if rest == 3:
+            if parent != 0:
+                ans.append(edge_num[(cur, parent)])
+            return 0
+        elif rest < 3:
+            return rest
+        else:
+            return 5
+
+    rounds = int(input())
+    for _ in range(rounds):
+        node = int(input())
+        edge: Dict[int, List[int]] = {}
+        for r in range(1, node+1):
+            edge[r] = []
+        edge_num = {}
+        ans = []
+        for e in range(1, node):
+            n1, n2 = map(int, input().split())
+            edge_num[(n1, n2)] = e
+            edge_num[(n2, n1)] = e
+            edge[n1].append(n2)
+            edge[n2].append(n1)
+        val = dfs(1, 0)
+        if val != 0:
+            print(-1)
+        else:
+            print(len(ans))
+            print(*ans)
