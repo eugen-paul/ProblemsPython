@@ -8,7 +8,7 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 
 class Solution:
-    def new21Game(self, n: int, k: int, maxPts: int) -> float:
+    def new21Game_s(self, n: int, k: int, maxPts: int) -> float:
         """sample solution"""
         dp = [0] * (n + 1)
         dp[0] = 1
@@ -20,6 +20,21 @@ class Solution:
             if i - maxPts >= 0 and i - maxPts < k:
                 s -= dp[i - maxPts]
         return sum(dp[k:])
+
+    def new21Game(self, n: int, k: int, maxPts: int) -> float:
+        if k == 0:
+            return 0
+
+        dp = [0] * (k+maxPts)
+        dp[0] = 1
+        s = dp[0]
+        for i in range(1, k+maxPts):
+            dp[i] = s / maxPts
+            if i < k:
+                s += dp[i]
+            if i - maxPts >= 0 and i - maxPts < k:
+                s -= dp[i - maxPts]
+        return sum(dp[k:n+1])
 
     def new21Game_1(self, n: int, k: int, maxPts: int) -> float:
         """to slow"""

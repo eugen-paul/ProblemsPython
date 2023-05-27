@@ -35,9 +35,6 @@ The task was solved with a HashMap and an X-doubly linked list. The doubly linke
 
 As an alternative, a solution with OrderedDict should be implemented.
 
-## 837. New 21 Game
-redo
-
 ## 879. Profitable Schemes
 redo using DP
 
