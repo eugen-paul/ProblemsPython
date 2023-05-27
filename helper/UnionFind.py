@@ -1,4 +1,5 @@
-from typing import List
+from math import inf
+from typing import Iterable, List
 
 """disjoint set / union-find. 
 The primary use of disjoint sets is to address the connectivity between the components of a network.
@@ -67,6 +68,27 @@ class UnionFind_by_rank:
         resp.root = list(self.root)
         resp.rank = list(self.rank)
         return resp
+    
+    def union_s(self, x: Iterable[int]):
+        """The union_s function unions all vertices and makes their root nodes the same.
+           
+           !!!components will be not updated!!!
+        Args:
+            x (int): Iterable vertices (set, list, ...)
+        """
+        # !!!  components will be not updated  !!!
+        roots: List[int] = [self.find(i) for i in x]
+        mi_rank = inf
+        mi_root = 0
+        for i in roots:
+            r = self.find(i)
+            if mi_rank > r:
+                mi_rank = r
+                mi_root = i
+
+        for i in roots:
+            self.rank[i] = mi_rank
+            self.root[i] = mi_root
 
 
 class UnionFind_QuickUnion:

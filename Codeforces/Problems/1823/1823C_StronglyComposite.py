@@ -12,7 +12,7 @@ def get_prims(n: int) -> List[int]:
         while n % p == 0:
             resp.append(p)
             n = n // p
-        if n < p:
+        if n < p*p:
             break
     if n != 1:
         resp.append(n)
