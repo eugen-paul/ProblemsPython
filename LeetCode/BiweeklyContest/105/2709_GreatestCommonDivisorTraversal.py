@@ -34,21 +34,6 @@ class UnionFind_by_rank:
                 self.rank[root_x] += 1
             self.components -= 1
 
-    def union_s(self, x: Iterable[int]):
-        roots: List[int] = [self.find(i) for i in x]
-        mi_rank = inf
-        mi_root = 0
-        for i in roots:
-            r = self.find(i)
-            if mi_rank > r:
-                mi_rank = r
-                mi_root = i
-
-        for i in roots:
-            self.rank[i] = mi_rank
-            self.root[i] = mi_root
-
-
 prims_1_317 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317]
 
 all_prims = prims_1_317
@@ -87,7 +72,9 @@ class Solution:
 
         un = UnionFind_by_rank(len(m))
         for r in rest:
-            un.union_s([m[i] for i in r])
+            a = r.pop()
+            while r:
+                un.union(m[a], m[r.pop()])
         
         roots = { un.find(x) for x in m.values() }
         return len(roots) == 1
@@ -128,19 +115,14 @@ class Solution:
         rest: List[Set[int]] = list(set(nums))
 
         rest = [get_prims(x) for x in rest]
-        s = set()
-        for x in rest:
-            s.update(x)
-        c = 0
-        m = dict()
-        for n in s:
-            m[n] = c
-            c += 1
+        s = set().union(*rest)
+        m = {x:i for i,x in enumerate(s)}
 
         un = UnionFind_by_rank(len(m))
         for r in rest:
-            for a, b in itertools.combinations(r, 2):
-                un.union(m[a], m[b])
+            a = r.pop()
+            while r:
+                un.union(m[a], m[r.pop()])
 
         return un.components == 1
 
