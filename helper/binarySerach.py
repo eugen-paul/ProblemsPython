@@ -8,6 +8,15 @@ def v1(magic_number: int):
             r = m-1
     return l
 
+def bs_a(a: List[int], v: int):
+    l, r = 0, len(a)-1
+    while l < r:
+        m = (r+l+1) // 2
+        if v >= a[m]:
+            l = m
+        else:
+            r = m-1
+    return l
 
 def v2(magic_number: int) -> int:
     l, r = 1, 1_000_000
