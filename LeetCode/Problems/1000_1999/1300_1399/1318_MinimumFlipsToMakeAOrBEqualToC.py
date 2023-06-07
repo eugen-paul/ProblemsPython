@@ -9,13 +9,9 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def minFlips(self, a: int, b: int, c: int) -> int:
-        A = str(bin(a))[2:]
-        B = str(bin(b))[2:]
-        C = str(bin(c))[2:]
-
-        A = "0"*(32-len(A)) + A
-        B = "0"*(32-len(B)) + B
-        C = "0"*(32-len(C)) + C
+        A = str(bin(a))[2:].zfill(32)
+        B = str(bin(b))[2:].zfill(32)
+        C = str(bin(c))[2:].zfill(32)
 
         resp = 0
         for a, b, c in zip(A, B, C):
