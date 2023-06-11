@@ -15,7 +15,6 @@ def i_int() -> int: return int(input())
 def i_str() -> str: return input()[:-1]
 def i_array_int() -> List[int]: return list(map(int, input().split()))
 def i_array_str() -> List[str]: i_str().split()
-def i_set_int() -> Set[int]: return set(map(int, input().split()))
 def i_matrix_int(h: int) -> List[List[int]]: return [list(map(int, input().split())) for _ in range(h)]
 
 
@@ -25,10 +24,23 @@ def inv(x): return pow(x % MOD, MOD - 2, MOD)
 def solve():
     for _ in range(i_int()):
         n = i_int()
-        a = i_array_int()
+        s = i_str()
+        resp = []
+        i = 0
+        while i < len(s):
+            resp.append(s[i])
+            i = s.index(s[i], i+1)+1
+        print("".join(resp))
 
 
-testData = """""".split("\n")
+testData = """3
+8
+abacabac
+5
+qzxcq
+20
+ccooddeeffoorrcceess
+""".split("\n")
 # testData = list()
 testDataPos = 0
 
