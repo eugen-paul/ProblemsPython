@@ -55,7 +55,10 @@ class SegmentTree:
         i = p
 
         while i > 1:
-            self.tree[i >> 1] = self._op(self.tree[i], self.tree[i ^ 1])
+            if i < i ^ 1:
+                self.tree[i >> 1] = self._op(self.tree[i], self.tree[i ^ 1])
+            else:
+                self.tree[i >> 1] = self._op(self.tree[i ^ 1], self.tree[i])
             i >>= 1
 
     def query(self, l: int, r: int) -> int:
