@@ -39,42 +39,31 @@ def solve():
                     pos[i] = False
             return full
 
-        # Get first position of each character
+        # Get first and last position of each character
         first = [-1, -1, -1, -1, -1]
+        last = [-1, -1, -1, -1, -1]
         for i, c in enumerate(s):
             if first[c] == -1:
                 first[c] = i
+            last[c] = i
 
-        # Get last position of each character
-        last = [-1, -1, -1, -1, -1]
-        for i, c in enumerate(reversed(s)):
-            if last[c] == -1:
-                last[c] = len(s) - i - 1
+        resp = -inf
+        to_check = {*first, *last}
 
-        resp = comp(s)
-
-        # Try to replace each first appearance of each character.
-        for sr in range(5):
+        # Try to replace each first and last appearance of each character.
+        for sr in to_check:
+            if sr == -1:
+                continue
+            tmp = s[sr]
             for tr in range(5):
-                if sr == tr or first[sr] == -1:
-                    continue
-                s[first[sr]] = tr
+                s[sr] = tr
                 resp = max(resp, comp(s))
-                s[first[sr]] = sr
-
-        # Try to replace each last appearance of each character.
-        for sr in range(5):
-            for tr in range(5):
-                if sr == tr or last[sr] == -1:
-                    continue
-                s[last[sr]] = tr
-                resp = max(resp, comp(s))
-                s[last[sr]] = sr
+            s[sr] = tmp
 
         print(resp)
 
 
-testData = """7
+testData = """8
 DAAABDCA
 AB
 ABCDEEDCBA
@@ -82,6 +71,11 @@ DDDDAAADDABECD
 A
 BDDEAEBDDDAAADCBDDDACBDCCBAADCBCBDDDACEBDAAACDDABA
 EDDDDDDDDDDDE
+DDDDDDDDDDDDE
+""".split("\n")
+testData = """2
+DDDDDDDDDDDDDDDDDDDE
+EEEEE
 """.split("\n")
 # testData = list()
 testDataPos = 0
