@@ -24,11 +24,31 @@ def inv(x): return pow(x % MOD, MOD - 2, MOD)
 
 def solve():
     for _ in range(i_int()):
-        n = i_int()
-        a = i_array_int()
+        L, R = i_array_str()
+
+        if len(L) < len(R):
+            L = L.rjust(len(R), "0")
+
+        resp = 0
+        first_diff = True
+        for a, b in zip(L, R):
+            if first_diff:
+                resp += abs(int(a)-int(b))
+                first_diff = a == b
+            else:
+                resp += 9
+
+        print(resp)
 
 
-testData = """""".split("\n")
+testData = """6
+53 57
+179 239
+13 37
+132228 132228
+54943329752812629795 55157581939688863366
+88 1914
+""".split("\n")
 # testData = list()
 testDataPos = 0
 
