@@ -38,6 +38,9 @@ As an alternative, a solution with OrderedDict should be implemented.
 ## 879. Profitable Schemes
 redo using DP
 
+## 956. Tallest Billboard
+Check sample solution. 
+
 ## 958. Check Completeness of a Binary Tree
 Check sample solution. 
 
