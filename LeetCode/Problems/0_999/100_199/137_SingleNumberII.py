@@ -9,6 +9,23 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def singleNumber(self, nums: List[int]) -> int:
+        c = [0] * 32
+        for n in nums:
+            n += 2**31
+            for i in range(32):
+                c[i] += 1 if n & (1 << i) != 0 else 0
+        resp = 0
+        for i, n in enumerate(c):
+            resp += (2**i) * (n % 3)
+        return resp - 2**31
+
+    def singleNumber(self, nums: List[int]) -> int:
+        c = Counter(nums)
+        for k, v in c.items():
+            if v == 1:
+                return k
+
+    def singleNumber(self, nums: List[int]) -> int:
         nums.sort()
         for i in range(0, len(nums)-2, 3):
             if nums[i] != nums[i+1]:
