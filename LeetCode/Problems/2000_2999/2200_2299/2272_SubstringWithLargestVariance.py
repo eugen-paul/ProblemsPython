@@ -20,11 +20,15 @@ class Solution:
             for c in s:
                 if c != a and c != b:
                     continue
-                cnt_a += 1 if c == a else 0
-                cnt_b += 1 if c == b else 0
-                while (cnt_b > 0 and cnt_a > 0 and cnt_b > cnt_a) or (cnt_b >= 2 and s[l] == b) or (s[l] != a and s[l] != b):
-                    cnt_a -= 1 if s[l] == a else 0
-                    cnt_b -= 1 if s[l] == b else 0
+                if c == a:
+                    cnt_a += 1
+                else:
+                    cnt_b += 1
+                while (cnt_a > 0 and cnt_b > cnt_a) or (cnt_b >= 2 and s[l] == b) or (s[l] != a and s[l] != b):
+                    if s[l] == a:
+                        cnt_a -= 1
+                    elif s[l] == b:
+                        cnt_b -= 1
                     l += 1
                 if cnt_a > 0 and cnt_b > 0:
                     resp = max(resp, cnt_a-cnt_b)
