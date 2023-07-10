@@ -1,4 +1,5 @@
-from typing import List, Optional
+from math import inf
+from typing import Deque, List, Optional
 
 
 class TreeNode:
@@ -12,6 +13,36 @@ class TreeNode:
 
 class Solution:
     def minDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        q = Deque()
+        q.append((root, 1))
+        resp = inf
+        while q:
+            cur, lev = q.pop()
+            if lev >= resp:
+                continue
+            if cur.left is None and cur.right is None:
+                resp = min(resp, lev)
+            if cur.left:
+                q.append((cur.left, lev+1))
+            if cur.right:
+                q.append((cur.right, lev+1))
+
+        return resp
+
+    def minDepth_2(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        if root.left and root.right:
+            return 1+min(self.minDepth(root.left), self.minDepth(root.right))
+        if root.left:
+            return 1+self.minDepth(root.left)
+        if root.right:
+            return 1+self.minDepth(root.right)
+        return 1
+
+    def minDepth_1(self, root: Optional[TreeNode]) -> int:
         if root is None:
             return 0
 
