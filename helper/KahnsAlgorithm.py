@@ -27,9 +27,11 @@ def kahnAlgo(n: int, edges: List[List[int]]) -> bool:
     q:Deque[int] = Deque([x for x, v in enumerate(indegree) if v == 0])
 
     nodes_seen = 0
+    # loops = set() #<- Nodes that are not a part of a loop and to which no connection from a loop points. However, the connection of the nodes can point to a loop.
     while q:
         node = q.pop()
         nodes_seen += 1
+        #loops.add(node)
 
         for neighbor in graph[node]:
             indegree[neighbor] -= 1
