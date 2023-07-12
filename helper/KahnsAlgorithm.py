@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Dict, List, Set
+from typing import Deque, Dict, List, Set
 
 
 def kahnAlgo(n: int, edges: List[List[int]]) -> bool:
@@ -23,11 +23,12 @@ def kahnAlgo(n: int, edges: List[List[int]]) -> bool:
         indegree[t] += 1
 
     # node to check for BSF. put all leaf nodes to q (indegree[x] == 0)
-    q: List[int] = [x for x, v in enumerate(indegree) if v == 0]
+    # q: List[int] = [x for x, v in enumerate(indegree) if v == 0]
+    q:Deque[int] = Deque([x for x, v in enumerate(indegree) if v == 0])
 
     nodes_seen = 0
     while q:
-        node = q.pop(0)
+        node = q.pop()
         nodes_seen += 1
 
         for neighbor in graph[node]:
