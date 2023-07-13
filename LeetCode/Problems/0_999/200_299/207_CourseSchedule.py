@@ -47,6 +47,29 @@ class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         return kahnAlgo(numCourses, prerequisites)
 
+    def canFinish_1(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        m = defaultdict(set)
+        for f, t in prerequisites:
+            m[f].add(t)
+        dp = [None] * numCourses
+
+        def solve(cur: int) -> bool:
+            if dp[cur] is not None:
+                return dp[cur]
+
+            dp[cur] = False
+            for nxt in m[cur]:
+                if not solve(nxt):
+                    return False
+
+            dp[cur] = True
+            return True
+
+        for i in range(numCourses):
+            if not solve(i):
+                return False
+        return True
+
 
 def do_test(i: int, s, n, r):
     c = Solution()
