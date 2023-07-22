@@ -39,6 +39,14 @@ class Solution:
 
         return max(dp)
 
+    def maxScore_i(self, nums: List[int], x: int) -> int:
+        """internet solution"""
+        dp = [0, 0]
+        for i in range(len(nums)-1, -1, -1):
+            m = nums[i] % 2
+            dp[m] = max(nums[i] + dp[m], nums[i] + dp[1-m] - x)
+        return dp[nums[0] % 2]
+
 
 def do_test(i: int, s, n, r):
     c = Solution()
