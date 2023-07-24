@@ -3,6 +3,35 @@ class Solution:
         if n == 0:
             return 1
 
+        resp = 1
+        exp = abs(n)
+        while exp:
+            if exp % 2 == 1:
+                resp *= x
+            x *= x
+            exp >>= 1
+
+        return resp if n > 0 else 1 / resp
+
+    def myPow_2(self, x: float, n: int) -> float:
+        if n == 0:
+            return 1
+
+        a = bin(abs(n))[3:]
+
+        resp = x
+        while a:
+            resp *= resp
+            if a[0] == '1':
+                resp *= x
+            a = a[1:]
+
+        return resp if n > 0 else 1 / resp
+
+    def myPow_1(self, x: float, n: int) -> float:
+        if n == 0:
+            return 1
+
         p = f"{abs(n):b}"
         r = 1
         for c in p:
@@ -14,7 +43,7 @@ class Solution:
             return 1 / r
 
         return r
-    
+
     def myPow_bin(self, x: float, n: int) -> float:
         if n == 0:
             return 1
