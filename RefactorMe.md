@@ -50,6 +50,9 @@ redo
 ## 1187. Make Array Strictly Increasing
 redo
 
+## 2141. Maximum Running Time of N Computers
+redo
+
 ## 2306. Naming a Company
 Refactor it. The solution is supposed to be faster and consume less memory.
 
