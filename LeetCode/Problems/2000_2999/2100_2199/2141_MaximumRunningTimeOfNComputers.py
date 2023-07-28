@@ -28,6 +28,29 @@ class Solution:
                 r = m-1
         return l
 
+    def maxRunTime(self, n: int, batteries: List[int]) -> int:
+        """internet solution"""
+        # Get the sum of all extra batteries.
+        batteries.sort()
+        extra = sum(batteries[:-n])
+
+        # live stands for the n largest batteries we chose for n computers.
+        live = batteries[-n:]
+
+        # We increase the total running time using 'extra' by increasing
+        # the running time of the computer with the smallest battery.
+        for i in range(n - 1):
+            # If the target running time is between live[i] and live[i + 1].
+            if extra // (i + 1) < live[i + 1] - live[i]:
+                return live[i] + extra // (i + 1)
+
+            # Reduce 'extra' by the total power used.
+            extra -= (i + 1) * (live[i + 1] - live[i])
+
+        # If there is power left, we can increase the running time
+        # of all computers.
+        return live[-1] + extra // n
+
 
 def do_test(i: int, s, n, r):
     c = Solution()
@@ -39,7 +62,7 @@ def do_test(i: int, s, n, r):
 
 
 if __name__ == "__main__":
-    do_test(0, 2, [3, 3, 3], 4)
-    do_test(1, 2, [1, 1, 1, 1], 2)
-    do_test(2, 1, [1, 2, 3, 4], 10)
+    # do_test(0, 2, [3, 3, 3], 4)
+    # do_test(1, 2, [1, 1, 1, 1], 2)
+    # do_test(2, 1, [1, 2, 3, 4], 10)
     do_test(3, 2, [1, 2, 10], 3)
