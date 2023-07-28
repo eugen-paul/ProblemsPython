@@ -9,12 +9,15 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def maxRunTime(self, n: int, batteries: List[int]) -> int:
-        def is_ok(t: int) -> bool:
-            extra = 0
-            for p in batteries:
-                extra += min(p, t)
 
-            return extra // n >= t
+        def is_ok(t: int) -> bool:
+            delta = 0
+            for b in batteries:
+                if t > b:
+                    delta += b
+                else:
+                    delta += t
+            return delta // n >= t
 
         l, r = 0, sum(batteries)
         while l < r:
@@ -23,7 +26,6 @@ class Solution:
                 l = m
             else:
                 r = m-1
-
         return l
 
 
@@ -39,3 +41,5 @@ def do_test(i: int, s, n, r):
 if __name__ == "__main__":
     do_test(0, 2, [3, 3, 3], 4)
     do_test(1, 2, [1, 1, 1, 1], 2)
+    do_test(2, 1, [1, 2, 3, 4], 10)
+    do_test(3, 2, [1, 2, 10], 3)
