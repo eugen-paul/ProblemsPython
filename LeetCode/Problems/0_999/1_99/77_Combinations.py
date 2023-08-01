@@ -1,8 +1,32 @@
+import itertools
 from typing import List
 
 
 class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
+        """need too much memory"""
+        resp = []
+        for i in range(1, n+1):
+            resp += [[i] + r for r in resp if len(r) <= k-1]
+            resp += [[i]]
+
+        return [sorted(r) for r in resp if len(r) == k]
+
+    def combine_3(self, n: int, k: int) -> List[List[int]]:
+        return [list(i) for i in itertools.combinations(range(1, n+1), k)]
+
+    def combine_2(self, n: int, k: int) -> List[List[int]]:
+        def solve(s: List[int], k) -> List[List[int]]:
+            if k == len(s):
+                return [s[:]]
+            resp = solve(s[1:], k)
+            if k >= 1:
+                resp.extend([[s[0]] + sub for sub in solve(s[1:], k-1)])
+            return resp
+
+        return solve([i for i in range(1, n+1)], k)
+
+    def combine_1(self, n: int, k: int) -> List[List[int]]:
         def rec(start: int, rest_k: int) -> List[List[int]]:
             if rest_k == 1:
                 return [[x] for x in range(start, n+1)]
@@ -34,6 +58,8 @@ class Solution:
 def do_test(i: int, s, n, r):
     c = Solution()
     resp = c.combine(s, n)
+    resp.sort()
+    r.sort()
     if resp == r:
         print("OK", i)
     else:
