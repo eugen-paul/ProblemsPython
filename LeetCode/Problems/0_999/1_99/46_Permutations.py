@@ -34,9 +34,24 @@ class Solution:
         return a
 
 
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        def solve(sub: List[int]) -> List[List[int]]:
+            if len(sub) <= 1:
+                return [sub]
+
+            resp = []
+            pre = solve(sub[1:])
+            for p in range(len(pre[0])+1):
+                resp += [tmp[:p] + [sub[0]] + tmp[p:] for tmp in pre]
+            return resp
+
+        return solve(nums)
+
+
 def do_test(i: int, s, r):
     c = Solution()
-    resp = c.permute_simple(s)
+    resp = c.permute(s)
     if sorted(resp) == sorted(r):
         print("OK", i)
     else:
@@ -47,3 +62,5 @@ if __name__ == "__main__":
     do_test(0, [1, 2, 3], [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]])
     do_test(1, [0, 1], [[0, 1], [1, 0]])
     do_test(2, [1], [[1]])
+    do_test(3, [5, 4, 6, 2], [[5, 4, 6, 2], [5, 4, 2, 6], [5, 6, 4, 2], [5, 6, 2, 4], [5, 2, 4, 6], [5, 2, 6, 4], [4, 5, 6, 2], [4, 5, 2, 6], [4, 6, 5, 2], [4, 6, 2, 5], [4, 2, 5, 6], [
+            4, 2, 6, 5], [6, 5, 4, 2], [6, 5, 2, 4], [6, 4, 5, 2], [6, 4, 2, 5], [6, 2, 5, 4], [6, 2, 4, 5], [2, 5, 4, 6], [2, 5, 6, 4], [2, 4, 5, 6], [2, 4, 6, 5], [2, 6, 5, 4], [2, 6, 4, 5]])
