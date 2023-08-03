@@ -17,17 +17,16 @@ class Solution:
             "9": ["w", "x", "y", "z"],
             "0": [" "],
         }
-        
+
         resp = [""]
         for d in reversed(digits):
             tmp = []
             for c in nTol[d]:
                 tmp += [c + t for t in resp]
             resp = tmp
-            
+
         return resp
-        
-        
+
     def letterCombinations_2(self, digits: str) -> List[str]:
         if len(digits) == 0:
             return []
