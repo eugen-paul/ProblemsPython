@@ -9,6 +9,37 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        n = len(s)
+        dp = [False] * (n+1)
+        dp[-1] = True
+
+        for i in range(n-1, -1, -1):
+            for w in wordDict:
+                if i+len(w) <= n and dp[i+len(w)] and s[i:].startswith(w):
+                    dp[i] = True
+                    break
+
+        return dp[0]
+
+    def wordBreak_3(self, s: str, wordDict: List[str]) -> bool:
+        @cache
+        def solve(start: int) -> bool:
+            return start == len(s) or any([s[start:].startswith(w) and solve(start+len(w)) for w in wordDict])
+        return solve(0)
+
+    def wordBreak_2(self, s: str, wordDict: List[str]) -> bool:
+        @cache
+        def solve(start: int) -> bool:
+            if start == len(s):
+                return True
+            for w in wordDict:
+                if s[start:].startswith(w) and solve(start+len(w)):
+                    return True
+            return False
+
+        return solve(0)
+
+    def wordBreak_1(self, s: str, wordDict: List[str]) -> bool:
         m: List[bool] = [False] * (len(s)+1)
 
         def check(sub: str) -> bool:
