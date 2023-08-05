@@ -1,3 +1,4 @@
+from functools import cache
 from itertools import product
 from typing import Dict, List, Optional, Tuple
 
@@ -10,7 +11,42 @@ class TreeNode:
 
 
 class Solution:
+    def generateTrees_s(self, n: int) -> List[Optional[TreeNode]]:
+        """sample solution"""
+        dp = [[[] for _ in range(n + 1)] for _ in range(n + 1)]
+        for i in range(1, n + 1):
+            dp[i][i] = [TreeNode(i)]
+
+        for numberOfNodes in range(2, n + 1):
+            for start in range(1, n - numberOfNodes + 2):
+                end = start + numberOfNodes - 1
+                for i in range(start, end + 1):
+                    left_subtrees = dp[start][i - 1] if i != start else [None]
+                    right_subtrees = dp[i + 1][end] if i != end else [None]
+
+                    for left in left_subtrees:
+                        for right in right_subtrees:
+                            root = TreeNode(i, left, right)
+                            dp[start][end].append(root)
+
+        return dp[1][n]
+
     def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+        @cache
+        def solve(s: Tuple[int]) -> List[Optional[TreeNode]]:
+            if len(s) == 0:
+                return [None]
+            resp = []
+            for i in s:
+                left = solve(tuple(c for c in s if c < i))
+                right = solve(tuple(c for c in s if c > i))
+                for l in left:
+                    for r in right:
+                        resp.append(TreeNode(i, l, r))
+            return resp
+        return solve(tuple(range(1, n+1)))
+
+    def generateTrees_3(self, n: int) -> List[Optional[TreeNode]]:
 
         m: Dict[Tuple[int, int], List[Optional[TreeNode]]] = dict()
 
@@ -20,8 +56,8 @@ class Solution:
             if l == r:
                 return [TreeNode(l)]
 
-            if (l,r) in m:
-                return m[(l,r)]
+            if (l, r) in m:
+                return m[(l, r)]
 
             sub_resp = []
             for i in range(l, r+1):
@@ -31,7 +67,7 @@ class Solution:
                 for le, ri in product(left, right):
                     sub_resp.append(TreeNode(i, le, ri))
 
-            m[(l,r)] = sub_resp
+            m[(l, r)] = sub_resp
             return sub_resp
 
         return gen_tree(1, n)
