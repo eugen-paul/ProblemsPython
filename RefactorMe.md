@@ -81,3 +81,7 @@ Refactor it. The solution is supposed to be faster and consume less memory.
 ## 2608. Shortest Cycle in a Graph
 
 redo with union find
+
+## 2809. Minimum Time to Make Array Sum At Most x
+
+redo
