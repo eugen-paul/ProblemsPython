@@ -54,6 +54,10 @@ redo
 
 redo using DP
 
+## 920. Number of Music Playlists
+
+redo
+
 ## 956. Tallest Billboard
 
 Check sample solution.
