@@ -1,8 +1,17 @@
+import bisect
 from typing import List
 
 
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        f = [e[0] for e in matrix]
+        r = bisect.bisect_right(f, target) - 1
+        if r < 0 or r == len(matrix):
+            return False
+        c = bisect.bisect_right(matrix[r], target) - 1
+        return c >= 0 and c != len(matrix[r]) and matrix[r][c] == target
+
+    def searchMatrix_1(self, matrix: List[List[int]], target: int) -> bool:
         l = 0
         r = len(matrix)-1
 
