@@ -2,8 +2,26 @@ from typing import List
 
 
 class Solution:
-
     def search(self, nums: List[int], target: int) -> int:
+        m = len(nums) // 2
+        if len(nums) == 0:
+            return -1
+        if nums[m] == target:
+            return m
+        if nums[0] <= target and target < nums[m]:
+            return self.search(nums[:m], target)
+        elif nums[m] < target and target <= nums[-1]:
+            tmp = self.search(nums[m+1:], target)
+            return tmp + m + 1 if tmp != -1 else -1
+        else:
+            if nums[0] > nums[m]:
+                return self.search(nums[:m], target)
+            if nums[m] > nums[-1]:
+                tmp = self.search(nums[m+1:], target)
+                return tmp + m + 1 if tmp != -1 else -1
+        return -1
+
+    def search_1(self, nums: List[int], target: int) -> int:
         left = 0
         right = len(nums)-1
 
@@ -71,3 +89,4 @@ if __name__ == "__main__":
     do_test(1, [4, 5, 6, 7, 0, 1, 2], 3, -1)
     do_test(3, [1], 0, -1)
     do_test(4, [5, 1, 3], 5, 0)
+    do_test(5, [1, 3, 5], 5, 2)
