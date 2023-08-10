@@ -3,6 +3,26 @@ from typing import List
 
 class Solution:
     def search(self, nums: List[int], target: int) -> bool:
+        m = (len(nums) - 1) // 2
+        if len(nums) == 0:
+            return False
+        if nums[m] == target:
+            return True
+        resp = False
+
+        if nums[0] <= target and target < nums[m]:
+            resp = self.search(nums[:m], target)
+        elif nums[m] < target and target <= nums[-1]:
+            resp = self.search(nums[m+1:], target)
+
+        if nums[0] >= nums[m]:
+            resp = resp or self.search(nums[:m], target)
+        if nums[m] >= nums[-1]:
+            resp = resp or self.search(nums[m+1:], target)
+
+        return resp
+
+    def search_1(self, nums: List[int], target: int) -> bool:
         if len(nums) == 0:
             return False
         if len(nums) == 1:
