@@ -1,5 +1,6 @@
 from collections import defaultdict
 from functools import cache
+import heapq
 from math import inf
 from typing import Deque, List, Dict, Set, Tuple, Counter
 
@@ -9,6 +10,17 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
+        q = []
+        heapq.heappush(q, nums[0])
+        for i in range(1, len(nums)):
+            if len(q) < k or q[0] <= nums[i]:
+                heapq.heappush(q, nums[i])
+            if len(q) > k:
+                heapq.heappop(q)
+
+        return heapq.heappop(q)
+
+    def findKthLargest_1(self, nums: List[int], k: int) -> int:
         nums.sort()
         return nums[-k]
 
