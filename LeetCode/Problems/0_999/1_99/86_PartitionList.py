@@ -9,6 +9,22 @@ class ListNode:
 
 class Solution:
     def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        l, r = ListNode(0), ListNode(0)
+        lh, rh = l, r
+        while head:
+            if head.val >= x:
+                r.next = head
+                r = r.next
+            else:
+                l.next = head
+                l = l.next
+            cur = head
+            head = head.next
+            cur.next = None
+        l.next = rh.next
+        return lh.next
+
+    def partition_1(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
         low = ListNode(-1)
         lastLow = low
         high = ListNode(-1)
@@ -27,6 +43,7 @@ class Solution:
 
         lastLow.next = high.next
         return low.next
+
 
 def from_list(data: ListNode):
     response = []
