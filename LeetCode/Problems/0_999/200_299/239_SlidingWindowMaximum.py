@@ -5,12 +5,30 @@ import heapq
 from math import inf
 from typing import Deque, List, Dict, Set, Tuple, Counter
 
+from sortedcontainers import SortedSet
+
 # import sys
 # sys.setrecursionlimit(10000)
 
 
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        s = Counter()
+        h = []
+        for i in range(k):
+            s[nums[i]] += 1
+            heapq.heappush(h, -nums[i])
+        resp = [-h[0]]
+        for i in range(k, len(nums)):
+            s[nums[i]] += 1
+            s[nums[i-k]] -= 1
+            heapq.heappush(h, -nums[i])
+            while s[-h[0]] == 0:
+                heapq.heappop(h)
+            resp.append(-h[0])
+        return resp
+
+    def maxSlidingWindow_1(self, nums: List[int], k: int) -> List[int]:
         s = [-x for x in nums[:k]]
         heapq.heapify(s)
 
