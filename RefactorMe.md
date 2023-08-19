@@ -74,6 +74,10 @@ redo
 
 redo
 
+## 1489. Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree
+
+redo
+
 ## 2306. Naming a Company
 
 Refactor it. The solution is supposed to be faster and consume less memory.
