@@ -3,6 +3,55 @@ from typing import List
 
 class Solution:
     def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        resp = []
+        cur = []
+        full_len = 0
+        for w in words:
+            if full_len + len(w) + len(cur) <= maxWidth:
+                cur.append(w)
+                full_len += len(w)
+            else:
+                pos = 0
+                while full_len < maxWidth:
+                    cur[pos] += " "
+                    full_len += 1
+                    pos = (pos+1) % (max(1, len(cur)-1))
+                resp.append("".join(cur))
+                cur = [w]
+                full_len = len(w)
+        resp.append(" ".join(cur) + " "*(maxWidth-full_len-max(0, len(cur)-1)))
+
+        return resp
+
+    def fullJustify_2(self, words: List[str], maxWidth: int) -> List[str]:
+        resp = []
+        cur = []
+        full_len = 0
+        for w in words:
+            if len(cur) == 0:
+                cur.append(w)
+                full_len += len(w)
+            elif full_len + 1 + len(w) <= maxWidth:
+                cur.append(" ")
+                cur.append(w)
+                full_len += 1+len(w)
+            else:
+                if len(cur) == 1:
+                    resp.append("".join(cur) + " "*(maxWidth-full_len))
+                else:
+                    pos = 1
+                    while full_len < maxWidth:
+                        cur[pos] += " "
+                        full_len += 1
+                        pos = pos+2 if pos+2 < len(cur) else 1
+                    resp.append("".join(cur))
+                cur = [w]
+                full_len = len(w)
+        resp.append("".join(cur) + " "*(maxWidth-full_len))
+
+        return resp
+
+    def fullJustify_(self, words: List[str], maxWidth: int) -> List[str]:
         """some ideas from solution"""
         resp = []
 
