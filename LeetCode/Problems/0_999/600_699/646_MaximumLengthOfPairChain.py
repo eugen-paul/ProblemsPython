@@ -12,6 +12,16 @@ class Solution:
     def findLongestChain(self, pairs: List[List[int]]) -> int:
         n = len(pairs)
         pairs.sort()
+        q = Deque([inf])
+        for i in range(n-1, -1, -1):
+            f, t = pairs[i]
+            if q[0] > t:
+                q.appendleft(f)
+        return len(q)-1
+
+    def findLongestChain_1(self, pairs: List[List[int]]) -> int:
+        n = len(pairs)
+        pairs.sort()
 
         @cache
         def solve(p: int) -> int:
@@ -25,16 +35,6 @@ class Solution:
             return best
 
         return solve(0)+1
-
-    def findLongestChain(self, pairs: List[List[int]]) -> int:
-        n = len(pairs)
-        pairs.sort()
-        q = Deque([inf])
-        for i in range(n-1, -1, -1):
-            f, t = pairs[i]
-            if q[0] > t:
-                q.appendleft(f)
-        return len(q)-1
 
 
 def do_test(i: int, s, r):
