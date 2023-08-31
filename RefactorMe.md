@@ -74,6 +74,10 @@ redo
 
 redo
 
+## 1326. Minimum Number of Taps to Open to Water a Garden
+
+redo
+
 ## 1489. Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree
 
 redo
