@@ -9,7 +9,25 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 class Solution:
     def minTaps(self, n: int, ranges: List[int]) -> int:
-        pass
+        ranges = [(max(0, i-v), min(i+v, n)) for i, v in enumerate(ranges) if v != 0]
+        ranges.sort()
+        if len(ranges) == 0 or ranges[0][0] != 0:
+            return -1
+
+        cnt = 0
+        max_end = 0
+        pos = 0
+        while pos < len(ranges) and max_end < n:
+            if ranges[pos][0] > max_end:
+                return -1
+            tmp = max_end
+            while pos < len(ranges) and ranges[pos][0] <= max_end:
+                tmp = max(tmp, ranges[pos][1])
+                pos += 1
+            max_end = tmp
+            cnt += 1
+
+        return cnt if max_end == n else -1
 
     def minTaps_s(self, n: int, ranges: List[int]) -> int:
         """sample solution"""
@@ -55,6 +73,8 @@ if __name__ == "__main__":
     do_test(1, 3, [0, 0, 0, 0], -1)
     do_test(2, 3, [0, 0, 0, 1], -1)
     do_test(3, 3, [0, 2, 0, 0], 1)
+    do_test(4, 8, [4, 0, 0, 0, 0, 0, 0, 0, 4], 2)
+    do_test(5, 8, [4, 0, 1, 3, 2, 1, 2, 0, 4], 2)
 
 
 def get_nb(x: int, y: int, maxX: int, maxY: int, minX: int = 0, minY: int = 0, dia: bool = False) -> List[Tuple[int, int]]:
