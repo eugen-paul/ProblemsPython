@@ -4,6 +4,9 @@ from typing import List
 
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
+        return math.comb(m+n-2, m-1)
+
+    def uniquePaths(self, m: int, n: int) -> int:
         """
         When moving through the labyrinth, the whole path from the robot consists exactly of m-1 steps down and n-1 steps right. The steps can occur in any order. 
         The path is exactly m-1+n-1 steps long. Use the probability to calculate the lottery wins to determine the number of all possible paths (Binomial coefficient).
