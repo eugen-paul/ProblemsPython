@@ -21,6 +21,18 @@ class Solution:
                 return True
         return False
 
+    def hasCycle_1(self, head: Optional[ListNode]) -> bool:
+        if not head:
+            return False
+        slow = head
+        fast = head.next
+        while fast is not None and fast.next is not None:
+            if fast == slow:
+                return True
+            slow = slow.next
+            fast = fast.next.next
+        return False
+
 
 def from_list(data: ListNode) -> List[int]:
     response = []
