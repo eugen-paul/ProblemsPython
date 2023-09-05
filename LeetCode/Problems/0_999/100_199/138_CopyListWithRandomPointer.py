@@ -10,8 +10,24 @@ class Node:
 
 
 class Solution:
-
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        if head is None:
+            return None
+        m = dict()
+        cur = head
+        while cur:
+            m[cur] = Node(cur.val)
+            cur = cur.next
+        cur = head
+        while cur:
+            if cur.next:
+                m[cur].next = m[cur.next]
+            if cur.random:
+                m[cur].random = m[cur.random]
+            cur = cur.next
+        return m[head]
+
+    def copyRandomList_1(self, head: 'Optional[Node]') -> 'Optional[Node]':
         if not head:
             return None
         start = Node(-1)
