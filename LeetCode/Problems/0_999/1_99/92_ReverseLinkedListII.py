@@ -10,6 +10,41 @@ class ListNode:
 
 class Solution:
     def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        if left == right:
+            return head
+
+        response = ListNode()
+        last = response
+
+        rev = ListNode()
+        doRev = False
+        pos = 1
+
+        while head:
+            tmp = head.next
+            if not doRev:
+                if pos != left:
+                    last.next = head
+                    last = last.next
+                    last.next = None
+                else:
+                    doRev = True
+            if doRev:
+                head.next = rev.next
+                rev.next = head
+                if pos == right:
+                    doRev = False
+                    last.next = rev.next
+                    while last.next:
+                        last = last.next
+                    last.next = None
+
+            head = tmp
+            pos += 1
+
+        return response.next
+
+    def reverseBetween_3(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
         resp = ListNode(0)
         cur = resp
         rev = []
