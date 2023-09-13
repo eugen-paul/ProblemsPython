@@ -8,6 +8,7 @@ from typing import Deque, List, Dict, Set, Tuple, Counter
 
 
 class Solution:
+
     def candy(self, ratings: List[int]) -> int:
         l = [1] * len(ratings)
         r = [1] * len(ratings)
