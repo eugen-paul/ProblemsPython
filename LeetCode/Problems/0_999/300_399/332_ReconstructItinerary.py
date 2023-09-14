@@ -10,7 +10,42 @@ from sortedcontainers import SortedList
 
 
 class Solution:
+
     def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        m: Dict[str, List[str]] = defaultdict(list)
+        for f, t in tickets:
+            m[f].append(t)
+        for v in m.values():
+            v.sort()
+
+        def solve(start: str, m: Dict[str, List[str]]) -> List[str]:
+            if len(m) == 0:
+                return []
+            if start not in m:
+                return None
+
+            targets = m[start][:]
+            if len(targets) == 1:
+                del m[start]
+                tmp = solve(targets[0], m)
+                m[start] = targets
+                if tmp is not None:
+                    return [targets[0]] + tmp
+                return None
+
+            for i, t in enumerate(targets):
+                m[start] = targets[:i] + targets[i+1:]
+                tmp = solve(t, m)
+                if tmp is not None:
+                    return [t] + tmp
+                m[start] = targets
+
+            return None
+
+        way = solve("JFK", m)
+        return ["JFK"]+way
+
+    def findItinerary_1(self, tickets: List[List[str]]) -> List[str]:
         m: Dict[List[List]] = defaultdict(SortedList)
 
         for d, f in tickets:
