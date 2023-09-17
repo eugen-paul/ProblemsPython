@@ -50,6 +50,10 @@ As an alternative, a solution with OrderedDict should be implemented.
 
 redo
 
+## 847. Shortest Path Visiting All Nodes
+
+redo
+
 ## 879. Profitable Schemes
 
 redo using DP
