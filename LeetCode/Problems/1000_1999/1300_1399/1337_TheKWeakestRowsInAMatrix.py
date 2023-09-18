@@ -4,6 +4,11 @@ from typing import List
 
 class Solution:
     def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:
+        mat = [(sum(r), i) for i, r in enumerate(mat)]
+        mat.sort()
+        return [i for _, i in mat[:k]]
+
+    def kWeakestRows_q(self, mat: List[List[int]], k: int) -> List[int]:
         t = list()
         for i, e in enumerate(mat):
             t.append((i, sum(e)))
