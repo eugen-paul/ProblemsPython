@@ -3,6 +3,13 @@ from typing import List
 
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        a = nums1 + nums2
+        a.sort()
+        if len(a) % 2 == 1:
+            return a[len(a) // 2]
+        return (a[len(a) // 2 - 1] + a[len(a) // 2]) / 2
+
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
         full_length = len(nums1) + len(nums2)
         half = full_length // 2
 
