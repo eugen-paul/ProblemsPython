@@ -62,6 +62,10 @@ redo
 
 redo using DP
 
+### 880. Decoded String at Index
+
+redo
+
 ## 920. Number of Music Playlists
 
 redo
