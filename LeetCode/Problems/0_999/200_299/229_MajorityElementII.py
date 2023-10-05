@@ -39,7 +39,7 @@ class Solution:
 
         return res
 
-    def majorityElement_1(self, nums: List[int]) -> List[int]:
+    def majorityElement(self, nums: List[int]) -> List[int]:
         limit = len(nums) // 3
         c = Counter(nums)
         resp = []
