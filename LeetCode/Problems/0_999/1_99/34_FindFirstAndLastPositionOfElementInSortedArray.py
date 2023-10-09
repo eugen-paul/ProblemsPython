@@ -1,3 +1,4 @@
+import bisect
 from typing import List
 
 
@@ -17,7 +18,7 @@ class Solution:
 
         in_min = target <= m_v_l
         in_max = m_v_r <= target
-        
+
         just_in_min = in_min and not in_max
         in_both = in_min and in_max
 
@@ -34,6 +35,15 @@ class Solution:
         ma = self.s(nums, target, 0, len(nums)-1, True)
         return [mi, ma]
 
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if len(nums) == 0:
+            return [-1, -1]
+        a = bisect.bisect_left(nums, target)
+        if a == -1 or a == len(nums) or nums[a] != target:
+            return [-1, -1]
+        b = bisect.bisect_right(nums, target)
+        return [a, b-1]
+
 
 def do_test(i: int, s, n, r):
     c = Solution()
@@ -48,3 +58,4 @@ if __name__ == "__main__":
     do_test(0, [5, 7, 7, 8, 8, 10], 8, [3, 4])
     do_test(1, [5, 7, 7, 8, 8, 10], 6, [-1, -1])
     do_test(2, [], 0, [-1, -1])
+    do_test(3, [1, 2, 3], 4, [-1, -1])
